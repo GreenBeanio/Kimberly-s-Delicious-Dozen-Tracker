@@ -2,6 +2,7 @@
     "mysql": {
         "Host": "Your Host",
         "User": "Your User",
-        "Password": "Your Password"
+        "Password": "Your Password",
+        "Database": "Your Database"
     }
 }
