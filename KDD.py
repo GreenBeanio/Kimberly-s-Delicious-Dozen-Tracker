@@ -103,6 +103,18 @@ def MySQL_Into_Table(table, query):
         print(error)
 
 
+# Function for general mysql queries
+def MYSQL_General_Query(query):
+    try:
+        connection = connect(host=host, user=user, password=password, database=database)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        connection.commit()
+        return "Successful Query"
+    except Error as error:
+        return error
+
+
 # Class for creating tables
 class QueryTable(QAbstractTableModel):
     # Initialize table
@@ -261,13 +273,13 @@ class LogWindow(QDialog):
         self.ui.GetEndButton.clicked.connect(self.Get_Time)
         self.ui.ShowActivitiesButton.clicked.connect(self.openWindow)
         self.ui.ShowOrdersButton.clicked.connect(self.openWindow)
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         # Date selection changed
         self.ui.DataSelect.dateChanged.connect(self.updateTable)
-        # Load Table
-        self.date_selection = self.ui.DataSelect.date().toPyDate
-        print(self.date_selection)
-        Query = f"SELECT * FROM log WHERE date = {self.date_selection}"
-        MySQL_Into_Table(self.ui.LogTable, Query)
+        # Load Table on load
+        self.updateTable()
 
     # Function to get the date
     def Get_Date(self):
@@ -303,9 +315,85 @@ class LogWindow(QDialog):
         date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
         # date_selection = self.ui.DataSelect.date().toString("yyyy.MM.dd")
         # date_selection = datetime.datetime.strptime(date_selection, "%Y.%m.%d")
-        # date_selection = date_selection.strftime(f"%Y-%m-%d")
+        # date_selection = date_selection.strftime("%Y-%m-%d")
         Query = f'SELECT * FROM log WHERE date = "{date_selection}"'
         MySQL_Into_Table(self.ui.LogTable, Query)
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get date
+        date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
+        date_selection = datetime.datetime.strptime(date_selection, "%Y-%m-%d").date()
+        # Get start time
+        start_time = self.ui.StartSelect.time().toString("hh:mm")
+        start_time = datetime.datetime.strptime(start_time, "%H:%M").time()
+        start_time = datetime.datetime.combine(date_selection, start_time)
+        # Get end time
+        end_time = self.ui.EndSelect.time().toString("hh:mm")
+        end_time = datetime.datetime.strptime(end_time, "%H:%M").time()
+        end_time = datetime.datetime.combine(date_selection, end_time)
+        # Get note
+        note = self.ui.NoteBox.toPlainText()
+        activity = "Baking"  # Need to get this from the selection
+        orderName = "Salty Party"  # Need to get this from the selection
+        Query = f'INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ("{start_time}", "{end_time}", "{note}", "{activity}", "{orderName}")'
+        result = MYSQL_General_Query(Query)
+        print(result)
+        # Reload the table
+        self.updateTable()
+        ### This seems to crash for some reason if you press it twice... not sure why
+
+    # Getting the selected Row
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.LogTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.LogTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get date
+        date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
+        date_selection = datetime.datetime.strptime(date_selection, "%Y-%m-%d").date()
+        # Get start time
+        start_time = self.ui.StartSelect.time().toString("hh:mm")
+        start_time = datetime.datetime.strptime(start_time, "%H:%M").time()
+        start_time = datetime.datetime.combine(date_selection, start_time)
+        # Get end time
+        end_time = self.ui.EndSelect.time().toString("hh:mm")
+        end_time = datetime.datetime.strptime(end_time, "%H:%M").time()
+        end_time = datetime.datetime.combine(date_selection, end_time)
+        # Get note
+        note = self.ui.NoteBox.toPlainText()
+        activity = "Baking"  # Need to get this from the selection
+        orderName = "Salty Party"  # Need to get this from the selection
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to update the value
+        Query = f'UPDATE log SET startTime="{start_time}", endTime="{end_time}", note="{note}", activity="{activity}", orderName="{orderName}" WHERE logid={value}'
+        result = MYSQL_General_Query(Query)
+        print(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM log WHERE logid={value}"
+        result = MYSQL_General_Query(Query)
+        print(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Defining the Items Window
