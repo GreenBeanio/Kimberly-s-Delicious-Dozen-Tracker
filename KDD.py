@@ -25,7 +25,7 @@ import sys
 import os
 from mysql.connector import connect, Error
 import datetime
-import pandas
+import pandas as pd
 
 # My UI
 import UI.Activities as Activities
@@ -63,20 +63,44 @@ def MySQL_Into_Table(table, query):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM log")
         query_data = cursor.fetchall()
-        query_headers = cursor.column_names
-        # Use pandas to filter the data (convert datetimes to strings and such)
-        ################
-        # Use setheaderData to set the headers to column names???
-
-        # Make a model for the view?
-        Table = QueryTable(query_data, query_headers)
-
+        query_headers = list(cursor.column_names)
+        # Title the headers
+        for pos in range(1, len(query_headers)):
+            query_headers[pos] = query_headers[pos].title()
+        # Used to print out query data
+        # for row_number, row in enumerate(query_data):
+        #     print(f"Row {row_number}")
+        #     for column_number, column in enumerate(row):
+        #         print(
+        #             f"{query_headers[column_number]}: {column} : Type: {type(column)}"
+        #         )
+        # Creating a pandas data frame
+        sql_panda = pd.DataFrame(query_data)
+        sql_panda.columns = query_headers
+        # For every column that is a datetime, convert it to time
+        for col in sql_panda.select_dtypes(include=["datetime64[ns]"]).columns.tolist():
+            sql_panda[col] = sql_panda[col].dt.time
+        # For every column that is a tiemdelta, do some real convoluted stuff to show it as a time
+        for col in sql_panda.select_dtypes(
+            include=["timedelta64[ns]"]
+        ).columns.tolist():
+            # For every timedelta in the column
+            for index, delta in enumerate(sql_panda[col]):
+                # Convert the timedelta into seconds and then a datetime
+                sql_panda.loc[index, col] = datetime.datetime.utcfromtimestamp(
+                    delta.total_seconds()
+                )  # .strftime("%H:%M:%S")
+            # Convert the new times to a datetime and then only show the time
+            sql_panda[col] = pd.to_datetime(sql_panda[col]).dt.time
+        # Make the table model
+        Table = QueryTable(sql_panda, query_headers)
+        # Set the table views model
         table.setModel(Table)
-        print("success")
     except Error as error:
         print(error)
 
 
+# Class for creating tables
 class QueryTable(QAbstractTableModel):
     # Initialize table
     def __init__(self, data, header):
@@ -89,7 +113,9 @@ class QueryTable(QAbstractTableModel):
     def data(self, index, role):
         # Do this or it's all kinds of messed up
         if role == Qt.ItemDataRole.DisplayRole:
-            return self._data[index.row()][index.column()]
+            return str(self._data.iloc[index.row(), index.column()])
+            # return str(self._data.iloc[index.row(), index.column()])
+            # return self._data[index.row()][index.column()]
 
     # Defining the rows
     def rowCount(self, index):
@@ -97,7 +123,8 @@ class QueryTable(QAbstractTableModel):
 
     # Defining the columns
     def columnCount(self, index):
-        return len(self._data[0])
+        return len(self._data.columns)
+        # return len(self._data[0])
 
     # Defining the column text
     def headerData(self, section, orientation, role):
