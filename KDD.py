@@ -47,7 +47,6 @@ password = ""
 database = ""
 mysql_connection = ""
 mysql_status = ""
-# Qt UI files
 
 # endregion Parameters
 
@@ -111,6 +110,18 @@ def MYSQL_General_Query(query):
         cursor.execute(query)
         connection.commit()
         return "Successful Query"
+    except Error as error:
+        return error
+
+
+# Function to get lists of query results
+def MYSQL_Query_List(query):
+    try:
+        connection = connect(host=host, user=user, password=password, database=database)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        query_data = cursor.fetchall()
+        return query_data
     except Error as error:
         return error
 
@@ -280,6 +291,8 @@ class LogWindow(QDialog):
         self.ui.DataSelect.dateChanged.connect(self.updateTable)
         # Load Table on load
         self.updateTable()
+        # Load foreign keys into the combo boxes
+        self.Add_To_Combo()
 
     # Function to get the date
     def Get_Date(self):
@@ -334,8 +347,8 @@ class LogWindow(QDialog):
         end_time = datetime.datetime.combine(date_selection, end_time)
         # Get note
         note = self.ui.NoteBox.toPlainText()
-        activity = "Baking"  # Need to get this from the selection
-        orderName = "Salty Party"  # Need to get this from the selection
+        activity = self.ui.ActivitiesBox.currentText()
+        orderName = self.ui.OrderBox.currentText()
         Query = f'INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ("{start_time}", "{end_time}", "{note}", "{activity}", "{orderName}")'
         result = MYSQL_General_Query(Query)
         print(result)
@@ -373,8 +386,8 @@ class LogWindow(QDialog):
         end_time = datetime.datetime.combine(date_selection, end_time)
         # Get note
         note = self.ui.NoteBox.toPlainText()
-        activity = "Baking"  # Need to get this from the selection
-        orderName = "Salty Party"  # Need to get this from the selection
+        activity = self.ui.ActivitiesBox.currentText()
+        orderName = self.ui.OrderBox.currentText()
         # Get the selected cell
         value = self.SelectedRow()
         # Query to update the value
@@ -394,6 +407,19 @@ class LogWindow(QDialog):
         print(result)
         # Reload the table
         self.updateTable()
+
+    # Combobox Items
+    def Add_To_Combo(self):
+        # Get the activities
+        Query = f"SELECT activityName FROM activity"
+        result = MYSQL_Query_List(Query)
+        for entry in result:
+            self.ui.ActivitiesBox.addItem(entry[0])
+        # Get the orders
+        Query = f"SELECT orderName FROM orders"
+        result = MYSQL_Query_List(Query)
+        for entry in result:
+            self.ui.OrderBox.addItem(entry[0])
 
 
 # Defining the Items Window
