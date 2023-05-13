@@ -2,7 +2,7 @@
 
 # region Imports
 import typing
-from PyQt6.QtCore import Qt, QAbstractTableModel
+from PyQt6.QtCore import Qt, QAbstractTableModel, QDate, QTime
 from PyQt6.QtWidgets import (
     QApplication,
     QLabel,
@@ -61,7 +61,7 @@ def MySQL_Into_Table(table, query):
         # Can't use the mysql connection from earlier. Does it have to be 1 every time?
         connection = connect(host=host, user=user, password=password, database=database)
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM log")
+        cursor.execute(query)
         query_data = cursor.fetchall()
         query_headers = list(cursor.column_names)
         # Title the headers
@@ -76,7 +76,9 @@ def MySQL_Into_Table(table, query):
         #         )
         # Creating a pandas data frame
         sql_panda = pd.DataFrame(query_data)
-        sql_panda.columns = query_headers
+        # Can't set headers if it's empty for whatever reason
+        if not sql_panda.empty:
+            sql_panda.columns = query_headers
         # For every column that is a datetime, convert it to time
         for col in sql_panda.select_dtypes(include=["datetime64[ns]"]).columns.tolist():
             sql_panda[col] = sql_panda[col].dt.time
@@ -97,6 +99,7 @@ def MySQL_Into_Table(table, query):
         # Set the table views model
         table.setModel(Table)
     except Error as error:
+        ### Will return this to the little error label in the future possibly
         print(error)
 
 
@@ -168,12 +171,12 @@ def connect_to_mysql():
 
 # Function to get the current date
 def GetDate():
-    return "Wow A date"
+    return datetime.date.today()
 
 
 # Function to get the current time
 def GetTime():
-    return "Wow A time"
+    return datetime.datetime.now()
 
 
 # Load the configuration file
@@ -258,13 +261,18 @@ class LogWindow(QDialog):
         self.ui.GetEndButton.clicked.connect(self.Get_Time)
         self.ui.ShowActivitiesButton.clicked.connect(self.openWindow)
         self.ui.ShowOrdersButton.clicked.connect(self.openWindow)
+        # Date selection changed
+        self.ui.DataSelect.dateChanged.connect(self.updateTable)
         # Load Table
-        MySQL_Into_Table(self.ui.LogTable, "test")
+        self.date_selection = self.ui.DataSelect.date().toPyDate
+        print(self.date_selection)
+        Query = f"SELECT * FROM log WHERE date = {self.date_selection}"
+        MySQL_Into_Table(self.ui.LogTable, Query)
 
     # Function to get the date
     def Get_Date(self):
         result = GetDate()
-        print(result)
+        self.ui.DataSelect.setDate(QDate(result))
 
     # Function to get the time
     def Get_Time(self):
@@ -272,12 +280,10 @@ class LogWindow(QDialog):
         pressed = self.sender().objectName()
         if pressed == "GetStartButton":
             result = GetTime()
-            print(result)
-            print("That's a start time")
+            self.ui.StartSelect.setTime(QTime(result.time()))
         elif pressed == "GetEndButton":
             result = GetTime()
-            print(result)
-            print("That's an end time")
+            self.ui.EndSelect.setTime(QTime(result.time()))
 
     # Slot for opening the other windows
     def openWindow(self):
@@ -291,6 +297,15 @@ class LogWindow(QDialog):
             window = OrdersWindow(self)
         # Open the selected window
         window.exec()
+
+    # Slot for updating the table
+    def updateTable(self):
+        date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
+        # date_selection = self.ui.DataSelect.date().toString("yyyy.MM.dd")
+        # date_selection = datetime.datetime.strptime(date_selection, "%Y.%m.%d")
+        # date_selection = date_selection.strftime(f"%Y-%m-%d")
+        Query = f'SELECT * FROM log WHERE date = "{date_selection}"'
+        MySQL_Into_Table(self.ui.LogTable, Query)
 
 
 # Defining the Items Window
