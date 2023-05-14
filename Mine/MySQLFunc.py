@@ -109,31 +109,4 @@ class MYSQL_General_Query:
             return str(error)
 
 
-# Used to return a list of query results
-class MYSQL_Query_List:
-    # Initialize class
-    def __init__(self, query, mysql):
-        self.query = query
-        self.host = mysql.host
-        self.user = mysql.user
-        self.password = mysql.password
-        self.database = mysql.database
-
-    # Function to get lists of query results
-    def MYSQL_Query_List(self):
-        try:
-            connection = connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database,
-            )
-            cursor = connection.cursor()
-            cursor.execute(self.query)
-            query_data = cursor.fetchall()
-            return query_data
-        except Error as error:
-            return str(error)
-
-
 # endregion Code

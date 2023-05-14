@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>572</height>
+    <width>557</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,27 +30,6 @@
      <layout class="QHBoxLayout" name="InputLayout">
       <item>
        <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0">
-        <item row="0" column="2">
-         <widget class="QPushButton" name="GetDateButton">
-          <property name="text">
-           <string>Get Date</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="DateLabel">
-          <property name="text">
-           <string>Date:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QPushButton" name="ShowActivitiesButton">
-          <property name="text">
-           <string>Show Activities</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="2">
          <widget class="QPushButton" name="ShowOrdersButton">
           <property name="text">
@@ -58,30 +37,20 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
-         <widget class="QComboBox" name="OrderBox"/>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="ActivitiesText"/>
         </item>
-        <item row="2" column="1">
-         <widget class="QTimeEdit" name="EndSelect">
-          <property name="displayFormat">
-           <string>HH:mm ap</string>
+        <item row="3" column="0">
+         <widget class="QLabel" name="ActivityLabel">
+          <property name="text">
+           <string>Activity:</string>
           </property>
          </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDateEdit" name="DataSelect"/>
         </item>
         <item row="1" column="2">
          <widget class="QPushButton" name="GetStartButton">
           <property name="text">
            <string>Get Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="StartLabel">
-          <property name="text">
-           <string>Start:</string>
           </property>
          </widget>
         </item>
@@ -99,22 +68,19 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="GetEndButton">
+        <item row="3" column="2">
+         <widget class="QPushButton" name="ShowActivitiesButton">
           <property name="text">
-           <string>Get Time</string>
+           <string>Show Activities</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="ActivityLabel">
+        <item row="0" column="2">
+         <widget class="QPushButton" name="GetDateButton">
           <property name="text">
-           <string>Activity:</string>
+           <string>Get Date</string>
           </property>
          </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="ActivitiesBox"/>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="OrderLabel">
@@ -122,6 +88,40 @@
            <string>Order:</string>
           </property>
          </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="StartLabel">
+          <property name="text">
+           <string>Start:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QTimeEdit" name="EndSelect">
+          <property name="displayFormat">
+           <string>HH:mm ap</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="DateLabel">
+          <property name="text">
+           <string>Date:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="GetEndButton">
+          <property name="text">
+           <string>Get Time</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDateEdit" name="DataSelect"/>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="OrderText"/>
         </item>
        </layout>
       </item>
@@ -207,9 +207,7 @@
   <tabstop>GetStartButton</tabstop>
   <tabstop>EndSelect</tabstop>
   <tabstop>GetEndButton</tabstop>
-  <tabstop>ActivitiesBox</tabstop>
   <tabstop>ShowActivitiesButton</tabstop>
-  <tabstop>OrderBox</tabstop>
   <tabstop>ShowOrdersButton</tabstop>
   <tabstop>NoteBox</tabstop>
   <tabstop>AddButton</tabstop>

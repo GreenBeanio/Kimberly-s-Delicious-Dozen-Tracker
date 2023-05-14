@@ -15,7 +15,7 @@ from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 
 # My Forms
-import Forms.OrdersWindow as OrdersWindow
+import Forms.CustomersWindow as CustomersWindow
 
 # endregion Imports
 
@@ -43,7 +43,7 @@ class OrdersWindow(QDialog):
 
     # Slot for opening the customers window
     def openCustomers(self):
-        window = OrdersWindow(self)
+        window = CustomersWindow.CustomersWindow(self.mysql_cred, self)
         window.show()
 
     # Get the date

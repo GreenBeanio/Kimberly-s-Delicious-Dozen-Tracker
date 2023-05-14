@@ -15,7 +15,7 @@ from Mine.MySQLFunc import MYSQL_General_Query
 
 # My Forms
 import Forms.ItemsWindow as ItemsWindow
-import Forms.CustomersWindow as CustomersWindow
+import Forms.OrdersWindow as OrdersWindow
 
 # endregion Imports
 
@@ -46,11 +46,10 @@ class OrderItemsWindow(QDialog):
         window = ""
         # Get the name of the button pressed
         pressed = self.sender().objectName()
-        print(pressed)
         if pressed == "OrdersButton":
-            window = CustomersWindow(self)
+            window = OrdersWindow.OrdersWindow(self.mysql_cred, self)
         elif pressed == "ItemsButton":
-            window = ItemsWindow(self)
+            window = ItemsWindow.ItemsWindow(self.mysql_cred, self)
         # Open the selected window
         window.show()
 

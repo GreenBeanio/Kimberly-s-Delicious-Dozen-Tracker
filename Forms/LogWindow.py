@@ -13,11 +13,10 @@ import UI.Log as Log
 # My code
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import MYSQL_Query_List
 
 # My Forms
 import Forms.ActivitiesWindow as ActivitiesWindow
-import Forms.CustomersWindow as CustomersWindow
+import Forms.OrdersWindow as OrdersWindow
 
 # endregion Imports
 
@@ -45,8 +44,6 @@ class LogWindow(QDialog):
         self.ui.DataSelect.dateChanged.connect(self.updateTable)
         # Load Table on load
         self.updateTable()
-        # Load foreign keys into the combo boxes
-        self.Add_To_Combo()
 
     # Function to get the date
     def Get_Date(self):
@@ -69,11 +66,10 @@ class LogWindow(QDialog):
         window = ""
         # Get the name of the button pressed
         pressed = self.sender().objectName()
-        print(pressed)
         if pressed == "ShowActivitiesButton":
-            window = ActivitiesWindow(self)
+            window = ActivitiesWindow.ActivitiesWindow(self.mysql_cred, self)
         elif pressed == "ShowOrdersButton":
-            window = CustomersWindow(self)
+            window = OrdersWindow.OrdersWindow(self.mysql_cred, self)
         # Open the selected window
         window.show()
 
@@ -113,8 +109,8 @@ class LogWindow(QDialog):
         end_time = datetime.datetime.combine(date_selection, end_time)
         # Get others
         note = self.ui.NoteBox.toPlainText()
-        activity = self.ui.ActivitiesBox.currentText()
-        orderName = self.ui.OrderBox.currentText()
+        activity = self.ui.ActivitiesText.text()
+        orderName = self.ui.OrderText.text()
         return start_time, end_time, note, activity, orderName
 
     # Slot for Adding an entry
@@ -157,23 +153,6 @@ class LogWindow(QDialog):
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
-
-    # Combobox Items
-    def Add_To_Combo(self):
-        # Get the activities
-        Query = f"SELECT activityName FROM activity"
-        # Have to create an instance of the object for this to work
-        query_list = MYSQL_Query_List(Query, self.mysql_cred)
-        result = query_list.MYSQL_Query_List()
-        print(result)
-        for entry in result:
-            self.ui.ActivitiesBox.addItem(entry[0])
-        # Get the orders
-        Query = f"SELECT orderName FROM orders"
-        query_list = MYSQL_Query_List(Query, self.mysql_cred)
-        result = query_list.MYSQL_Query_List()
-        for entry in result:
-            self.ui.OrderBox.addItem(entry[0])
 
 
 # endregion Code
