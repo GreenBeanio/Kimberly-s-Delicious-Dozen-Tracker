@@ -102,7 +102,10 @@ class LogWindow(QDialog):
         self.ui.DataSelect.setDate(QDate.fromString(results[1], "yyyy-MM-dd"))
         self.ui.StartSelect.setTime(QTime.fromString(results[2], "HH:mm:ss"))
         self.ui.EndSelect.setTime(QTime.fromString(results[3], "HH:mm:ss"))
-        self.ui.NoteBox.setText(results[5])
+        if results[5] == "None":
+            self.ui.NoteBox.setText("")
+        else:
+            self.ui.NoteBox.setText(results[5])
         self.ui.ActivitiesText.setText(results[6])
         self.ui.OrderText.setText(results[7])
 
@@ -140,11 +143,9 @@ class LogWindow(QDialog):
         orderName = self.ui.OrderText.text()
         return start_time, end_time, note, activity, orderName
 
-    # Slot for Adding an entry
-    def AddEntry(self):
-        # Get element values
-        values = self.GetValues()
-        values = list(values)
+    # Function for trying to handle null values
+    def Null_Values(self, modify):
+        values = list(modify)
         # Attempting to allow for null values
         for index, value in enumerate(values):
             # If the value is a string
@@ -157,7 +158,19 @@ class LogWindow(QDialog):
                     values[index] = f'"{value}"'
             # If it's a date surround it in quotes
             elif type(value) == datetime.datetime:
-                values[index] = f'"{value}"'
+                # If the date is the date for pseudo null treat it as such
+                if value == datetime.datetime(2000, 1, 1):
+                    values[index] = "NULL"
+                # If it's a valid date, then treat it as such
+                else:
+                    values[index] = f'"{value}"'
+        return values
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        values = self.Null_Values(values)
         # Create query
         Query = f"INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ({values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]})"
         # Get result of the query
@@ -173,8 +186,9 @@ class LogWindow(QDialog):
         value = self.SelectedRow()
         # Get element values
         values = self.GetValues()
+        values = self.Null_Values(values)
         # Query to update the value
-        Query = f'UPDATE log SET startTime="{values[0]}", endTime="{values[1]}", note="{values[2]}", activity="{values[3]}", orderName="{values[4]}" WHERE logid={value}'
+        Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, note={values[2]}, activity={values[3]}, orderName={values[4]} WHERE logid={value}"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

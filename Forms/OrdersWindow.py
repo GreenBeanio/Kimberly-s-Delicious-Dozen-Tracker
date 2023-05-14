@@ -38,6 +38,7 @@ class OrdersWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        self.ui.ResetButton.clicked.connect(self.ResetDate)
         # Table clicked
         self.ui.OrderTable.clicked.connect(self.updateValues)
         # Update table
@@ -47,6 +48,10 @@ class OrdersWindow(QDialog):
     def openCustomers(self):
         window = CustomersWindow.CustomersWindow(self.mysql_cred, self)
         window.show()
+
+    # To reset the date for pseudo null value
+    def ResetDate(self):
+        self.ui.FinalDate.setDate(QDate(2000, 1, 1))
 
     # Get the date
     def GetDate(self):
