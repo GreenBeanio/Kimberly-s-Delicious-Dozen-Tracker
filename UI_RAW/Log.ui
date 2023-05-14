@@ -62,7 +62,11 @@
          <widget class="QComboBox" name="OrderBox"/>
         </item>
         <item row="2" column="1">
-         <widget class="QTimeEdit" name="EndSelect"/>
+         <widget class="QTimeEdit" name="EndSelect">
+          <property name="displayFormat">
+           <string>HH:mm ap</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="1">
          <widget class="QDateEdit" name="DataSelect"/>
@@ -82,7 +86,11 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QTimeEdit" name="StartSelect"/>
+         <widget class="QTimeEdit" name="StartSelect">
+          <property name="displayFormat">
+           <string>HH:mm ap</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="EndLabel">

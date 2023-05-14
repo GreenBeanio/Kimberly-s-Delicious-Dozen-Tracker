@@ -247,7 +247,8 @@ class MainWindow(QDialog):
         elif pressed == "OrdersButton":
             window = OrdersWindow(self)
         # Open the selected window
-        window.exec()
+        window.show()
+        # window.exec()
 
 
 # Defining the Activities Window
@@ -321,7 +322,8 @@ class LogWindow(QDialog):
         elif pressed == "ShowOrdersButton":
             window = OrdersWindow(self)
         # Open the selected window
-        window.exec()
+        window.show()
+        # window.exec()
 
     # Slot for updating the table
     def updateTable(self):
@@ -455,7 +457,8 @@ class OrderItemsWindow(QDialog):
         elif pressed == "ItemsButton":
             window = ItemsWindow(self)
         # Open the selected window
-        window.exec()
+        window.show()
+        # window.exec()
 
 
 # Defining the Orders Window
@@ -473,7 +476,8 @@ class OrdersWindow(QDialog):
     # Slot for opening the customers window
     def openCustomers(self):
         window = CustomersWindow(self)
-        window.exec()
+        window.show()
+        # window.exec()
 
     # Get the date
     def GetDate(self):
