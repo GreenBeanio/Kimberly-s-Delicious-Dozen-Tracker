@@ -144,8 +144,22 @@ class LogWindow(QDialog):
     def AddEntry(self):
         # Get element values
         values = self.GetValues()
+        values = list(values)
+        # Attempting to allow for null values
+        for index, value in enumerate(values):
+            # If the value is a string
+            if type(value) == str:
+                # If it is empty then make it NULL
+                if value == "":
+                    values[index] = "NULL"
+                # If it isn't empty surround it in quotes
+                else:
+                    values[index] = f'"{value}"'
+            # If it's a date surround it in quotes
+            elif type(value) == datetime.datetime:
+                values[index] = f'"{value}"'
         # Create query
-        Query = f'INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ("{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}")'
+        Query = f"INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ({values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]})"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
