@@ -416,30 +416,6 @@ class LogWindow(QDialog):
         Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY startTime'
         MySQL_Into_Table(self.ui.LogTable, Query)
 
-    # Slot for Adding an entry
-    def AddEntry(self):
-        # Get date
-        date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
-        date_selection = datetime.datetime.strptime(date_selection, "%Y-%m-%d").date()
-        # Get start time
-        start_time = self.ui.StartSelect.time().toString("hh:mm")
-        start_time = datetime.datetime.strptime(start_time, "%H:%M").time()
-        start_time = datetime.datetime.combine(date_selection, start_time)
-        # Get end time
-        end_time = self.ui.EndSelect.time().toString("hh:mm")
-        end_time = datetime.datetime.strptime(end_time, "%H:%M").time()
-        end_time = datetime.datetime.combine(date_selection, end_time)
-        # Get note
-        note = self.ui.NoteBox.toPlainText()
-        activity = self.ui.ActivitiesBox.currentText()
-        orderName = self.ui.OrderBox.currentText()
-        Query = f'INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ("{start_time}", "{end_time}", "{note}", "{activity}", "{orderName}")'
-        result = MYSQL_General_Query(Query)
-        print(result)
-        # Reload the table
-        self.updateTable()
-        ### This seems to crash for some reason if you press it twice... not sure why
-
     # Getting the selected Row
     def SelectedRow(self):
         # Get the current selected cell
@@ -455,8 +431,8 @@ class LogWindow(QDialog):
         # Return the value
         return value
 
-    # Slot for Updating an entry
-    def UpdateEntry(self):
+    # Function to get the information from gui elements
+    def GetValues(self):
         # Get date
         date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
         date_selection = datetime.datetime.strptime(date_selection, "%Y-%m-%d").date()
@@ -468,16 +444,36 @@ class LogWindow(QDialog):
         end_time = self.ui.EndSelect.time().toString("hh:mm")
         end_time = datetime.datetime.strptime(end_time, "%H:%M").time()
         end_time = datetime.datetime.combine(date_selection, end_time)
-        # Get note
+        # Get others
         note = self.ui.NoteBox.toPlainText()
         activity = self.ui.ActivitiesBox.currentText()
         orderName = self.ui.OrderBox.currentText()
+        return start_time, end_time, note, activity, orderName
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ("{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+        ### This seems to crash for some reason if you press it twice... not sure why
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
         # Get the selected cell
         value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
         # Query to update the value
-        Query = f'UPDATE log SET startTime="{start_time}", endTime="{end_time}", note="{note}", activity="{activity}", orderName="{orderName}" WHERE logid={value}'
+        Query = f'UPDATE log SET startTime="{values[0]}", endTime="{values[1]}", note="{values[2]}", activity="{values[3]}", orderName="{values[4]}" WHERE logid={value}'
+        # Get result of the query
         result = MYSQL_General_Query(Query)
-        print(result)
+        self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
 
@@ -487,8 +483,9 @@ class LogWindow(QDialog):
         value = self.SelectedRow()
         # Query to delete the entry
         Query = f"DELETE FROM log WHERE logid={value}"
+        # Get result of the query
         result = MYSQL_General_Query(Query)
-        print(result)
+        self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
 
