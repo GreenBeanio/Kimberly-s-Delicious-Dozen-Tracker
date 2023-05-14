@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>573</height>
+    <width>558</width>
+    <height>576</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,189 +16,183 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget_3">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>557</width>
-     <height>571</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
-    <item>
-     <layout class="QHBoxLayout" name="InputLayout">
-      <item>
-       <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0">
-        <item row="4" column="2">
-         <widget class="QPushButton" name="ShowOrdersButton">
-          <property name="text">
-           <string>Show Orders</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="ActivitiesText"/>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="ActivityLabel">
-          <property name="text">
-           <string>Activity:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="GetStartButton">
-          <property name="text">
-           <string>Get Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QTimeEdit" name="StartSelect">
-          <property name="displayFormat">
-           <string>HH:mm ap</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="EndLabel">
-          <property name="text">
-           <string>End:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QPushButton" name="ShowActivitiesButton">
-          <property name="text">
-           <string>Show Activities</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="GetDateButton">
-          <property name="text">
-           <string>Get Date</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="OrderLabel">
-          <property name="text">
-           <string>Order:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="StartLabel">
-          <property name="text">
-           <string>Start:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QTimeEdit" name="EndSelect">
-          <property name="displayFormat">
-           <string>HH:mm ap</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="DateLabel">
-          <property name="text">
-           <string>Date:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="GetEndButton">
-          <property name="text">
-           <string>Get Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDateEdit" name="DataSelect"/>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="OrderText"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="NoteLayout">
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QLabel" name="NoteLabel">
-          <property name="text">
-           <string>Note:</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::PlainText</enum>
-          </property>
-          <property name="wordWrap">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="NoteBox"/>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="OutputLayout">
-      <item>
-       <layout class="QHBoxLayout" name="ModificationLayout">
-        <item>
-         <widget class="QPushButton" name="AddButton">
-          <property name="text">
-           <string>Add</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="UpdateButton">
-          <property name="text">
-           <string>Update</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="DeleteButton">
-          <property name="text">
-           <string>Delete</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="ResultLayout">
-        <item>
-         <widget class="QLabel" name="OutputLabel">
-          <property name="text">
-           <string>Result:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="OutputText">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTableView" name="LogTable"/>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
+     <item>
+      <layout class="QHBoxLayout" name="InputLayout">
+       <item>
+        <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0">
+         <item row="4" column="2">
+          <widget class="QPushButton" name="ShowOrdersButton">
+           <property name="text">
+            <string>Show Orders</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="ActivitiesText"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="ActivityLabel">
+           <property name="text">
+            <string>Activity:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="GetStartButton">
+           <property name="text">
+            <string>Get Time</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QTimeEdit" name="StartSelect">
+           <property name="displayFormat">
+            <string>HH:mm ap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="EndLabel">
+           <property name="text">
+            <string>End:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QPushButton" name="ShowActivitiesButton">
+           <property name="text">
+            <string>Show Activities</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="GetDateButton">
+           <property name="text">
+            <string>Get Date</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="OrderLabel">
+           <property name="text">
+            <string>Order:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="StartLabel">
+           <property name="text">
+            <string>Start:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QTimeEdit" name="EndSelect">
+           <property name="displayFormat">
+            <string>HH:mm ap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="DateLabel">
+           <property name="text">
+            <string>Date:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="GetEndButton">
+           <property name="text">
+            <string>Get Time</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDateEdit" name="DataSelect"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="OrderText"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="NoteLayout">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="NoteLabel">
+           <property name="text">
+            <string>Note:</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="NoteBox"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="OutputLayout">
+       <item>
+        <layout class="QHBoxLayout" name="ModificationLayout">
+         <item>
+          <widget class="QPushButton" name="AddButton">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="UpdateButton">
+           <property name="text">
+            <string>Update</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="DeleteButton">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="ResultLayout">
+         <item>
+          <widget class="QLabel" name="OutputLabel">
+           <property name="text">
+            <string>Result:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="OutputText">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QTableView" name="LogTable"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <tabstops>
   <tabstop>DataSelect</tabstop>
