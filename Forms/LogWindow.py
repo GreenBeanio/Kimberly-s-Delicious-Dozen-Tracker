@@ -76,14 +76,10 @@ class LogWindow(QDialog):
             window = CustomersWindow(self)
         # Open the selected window
         window.show()
-        # window.exec()
 
     # Slot for updating the table
     def updateTable(self):
         date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
-        # date_selection = self.ui.DataSelect.date().toString("yyyy.MM.dd")
-        # date_selection = datetime.datetime.strptime(date_selection, "%Y.%m.%d")
-        # date_selection = date_selection.strftime("%Y-%m-%d")
         Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY startTime'
         MySQL_Into_Table(self.ui.LogTable, Query, self.mysql_cred)
 
@@ -133,7 +129,6 @@ class LogWindow(QDialog):
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
-        ### This seems to crash for some reason if you press it twice... not sure why
 
     # Slot for Updating an entry
     def UpdateEntry(self):

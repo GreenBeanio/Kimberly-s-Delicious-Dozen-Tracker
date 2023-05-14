@@ -39,7 +39,6 @@ class MySQL_Into_Table:
     def MySQL_Into_Table(self):
         # Create cursor for query
         try:
-            # Can't use the mysql connection from earlier. Does it have to be 1 every time?
             connection = connect(
                 host=self.host,
                 user=self.user,
@@ -72,7 +71,7 @@ class MySQL_Into_Table:
                     # Convert the timedelta into seconds and then a datetime
                     sql_panda.loc[index, col] = datetime.datetime.utcfromtimestamp(
                         delta.total_seconds()
-                    )  # .strftime("%H:%M:%S")
+                    )
                 # Convert the new times to a datetime and then only show the time
                 sql_panda[col] = pd.to_datetime(sql_panda[col]).dt.time
             # Make the table model

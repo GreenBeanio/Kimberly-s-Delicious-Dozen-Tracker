@@ -60,8 +60,7 @@ class OrderItemsWindow(QDialog):
         Query = f'SELECT * FROM orderitems WHERE orderName = "{orderName}"'
         MySQL_Into_Table(self.ui.OrderItemTable, Query, self.mysql_cred)
 
-        # Getting the selected Row
-
+    # Getting the selected Row
     def SelectedRow(self):
         # Get the current selected cell
         cell = self.ui.OrderItemTable.currentIndex()

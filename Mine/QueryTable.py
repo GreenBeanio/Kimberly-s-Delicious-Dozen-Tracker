@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt, QAbstractTableModel
 # endregion Imports
 
 
-# Class for creating tables
+# Class for creating table models for the table views to use
 class QueryTable(QAbstractTableModel):
     # Initialize table
     def __init__(self, data, header):
@@ -20,8 +20,6 @@ class QueryTable(QAbstractTableModel):
         # Do this or it's all kinds of messed up
         if role == Qt.ItemDataRole.DisplayRole:
             return str(self._data.iloc[index.row(), index.column()])
-            # return str(self._data.iloc[index.row(), index.column()])
-            # return self._data[index.row()][index.column()]
 
     # Defining the rows
     def rowCount(self, index):
