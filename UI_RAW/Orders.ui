@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OrdersDialog</class>
+ <widget class="QDialog" name="OrdersDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>559</width>
+    <height>615</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Orders</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>557</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
+    <item>
+     <layout class="QHBoxLayout" name="InputLayout">
+      <item>
+       <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0,0">
+        <item row="3" column="0">
+         <widget class="QLabel" name="PlannedLabel">
+          <property name="text">
+           <string>Planned Date:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLineEdit" name="PriceText"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QDateEdit" name="OrderDate"/>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="OrderText_2"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="CustomerLabel">
+          <property name="text">
+           <string>Customer:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QDateEdit" name="PlannedDate"/>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="StatusLabel">
+          <property name="text">
+           <string>Status:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="PriceLabel">
+          <property name="text">
+           <string>Price:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QTextEdit" name="OrderText"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="CustomerText"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="OrderLabel">
+          <property name="text">
+           <string>Order Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="OrderNote">
+          <property name="text">
+           <string>Note:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QDateEdit" name="FinalDate"/>
+        </item>
+        <item row="6" column="2">
+         <widget class="QComboBox" name="StatusBox">
+          <item>
+           <property name="text">
+            <string>Production</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Sold</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Cancelled</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Preorder</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>No Payment</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Late</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="OrderLabel_2">
+          <property name="text">
+           <string>Order Date:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="FinalLabel">
+          <property name="text">
+           <string>Final Date:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QPushButton" name="CustomersButton">
+          <property name="text">
+           <string>Show Customers</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="GetDateButton">
+          <property name="text">
+           <string>Get Date</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="OutputLayout">
+      <item>
+       <layout class="QHBoxLayout" name="ModificationLayout">
+        <item>
+         <widget class="QPushButton" name="AddButton">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="UpdateButton">
+          <property name="text">
+           <string>Update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DeleteButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="ResultLayout">
+        <item>
+         <widget class="QLabel" name="OutputLabel">
+          <property name="text">
+           <string>Result:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="OutputText">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTableView" name="OrderTable"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>OrderText_2</tabstop>
+  <tabstop>CustomerText</tabstop>
+  <tabstop>CustomersButton</tabstop>
+  <tabstop>OrderDate</tabstop>
+  <tabstop>GetDateButton</tabstop>
+  <tabstop>PlannedDate</tabstop>
+  <tabstop>FinalDate</tabstop>
+  <tabstop>PriceText</tabstop>
+  <tabstop>StatusBox</tabstop>
+  <tabstop>OrderText</tabstop>
+  <tabstop>AddButton</tabstop>
+  <tabstop>UpdateButton</tabstop>
+  <tabstop>DeleteButton</tabstop>
+  <tabstop>OutputText</tabstop>
+  <tabstop>OrderTable</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

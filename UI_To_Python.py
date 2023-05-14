@@ -14,19 +14,8 @@ Save_Path = "UI/"
 UI_Path = Path(UI_Path)
 Save_Path = Path(Save_Path)
 
-# To store bad paths
-bad_paths = []
-
 # List of the files in the directory
 ui_to_convert = os.listdir(UI_Path)
-
-
-# Stop if the paths are bad
-def Invalid_Directory():
-    for bad in bad_paths:
-        print(f"Invalid {bad} path to directory!")
-    input()
-    sys.exit()
 
 
 # Check for existence of paths
@@ -53,15 +42,16 @@ def convert_ui():
             )
 
 
-# Check that both paths are good
+# If the source ui directory doesn't exist stop the script
 result = check_directory(UI_Path, "UI")
 if result != "":
-    bad_paths.append(result)
+    print(f"Invalid ui path to directory!")
+    input()
+    sys.exit()
+# If the save path doesn't exist then make it
 result = check_directory(Save_Path, "Save")
 if result != "":
-    bad_paths.append(result)
-if len(bad_paths) != 0:
-    Invalid_Directory()
+    os.mkdir(Save_Path)
 
 # Compile the ui files to python
 convert_ui()

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OrderItemsDialog</class>
+ <widget class="QDialog" name="OrderItemsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>613</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Order Items</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>557</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
+    <item>
+     <layout class="QHBoxLayout" name="InputLayout">
+      <item>
+       <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0,0">
+        <item row="0" column="0">
+         <widget class="QLabel" name="OrderLabel">
+          <property name="text">
+           <string>Order Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="OrdersButton">
+          <property name="text">
+           <string>Show Orders</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QTextEdit" name="NoteText"/>
+        </item>
+        <item row="1" column="3">
+         <widget class="QPushButton" name="ItemsButton">
+          <property name="text">
+           <string>Show Items</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="ItemLabel">
+          <property name="text">
+           <string>Item:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="QuantityText"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="PriceLabel">
+          <property name="text">
+           <string>Price:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="ItemText"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="NoteLabel">
+          <property name="text">
+           <string>Note:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLineEdit" name="PriceText"/>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="OrderText"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="QuantityLabel">
+          <property name="text">
+           <string>Quantity:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="OutputLayout">
+      <item>
+       <layout class="QHBoxLayout" name="ModificationLayout">
+        <item>
+         <widget class="QPushButton" name="AddButton">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="UpdateButton">
+          <property name="text">
+           <string>Update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DeleteButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="ResultLayout">
+        <item>
+         <widget class="QLabel" name="OutputLabel">
+          <property name="text">
+           <string>Result:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="OutputText">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTableView" name="OrderItemTable"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>OrderText</tabstop>
+  <tabstop>OrdersButton</tabstop>
+  <tabstop>ItemText</tabstop>
+  <tabstop>ItemsButton</tabstop>
+  <tabstop>QuantityText</tabstop>
+  <tabstop>PriceText</tabstop>
+  <tabstop>NoteText</tabstop>
+  <tabstop>AddButton</tabstop>
+  <tabstop>UpdateButton</tabstop>
+  <tabstop>DeleteButton</tabstop>
+  <tabstop>OutputText</tabstop>
+  <tabstop>OrderItemTable</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

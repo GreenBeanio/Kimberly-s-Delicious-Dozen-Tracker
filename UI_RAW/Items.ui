@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemsDialog</class>
+ <widget class="QDialog" name="ItemsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>241</width>
+    <height>340</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Items</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>243</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
+    <item>
+     <layout class="QHBoxLayout" name="InputLayout">
+      <item>
+       <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0">
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="ItemText"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="ItemLabel">
+          <property name="text">
+           <string>Item Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="PriceLabel">
+          <property name="text">
+           <string>Item Price:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="PriceText"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="OutputLayout">
+      <item>
+       <layout class="QHBoxLayout" name="ModificationLayout">
+        <item>
+         <widget class="QPushButton" name="AddButton">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="UpdateButton">
+          <property name="text">
+           <string>Update</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DeleteButton">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="ResultLayout">
+        <item>
+         <widget class="QLabel" name="OutputLabel">
+          <property name="text">
+           <string>Result:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="OutputText">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTableView" name="ItemTable"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>ItemText</tabstop>
+  <tabstop>PriceText</tabstop>
+  <tabstop>AddButton</tabstop>
+  <tabstop>UpdateButton</tabstop>
+  <tabstop>DeleteButton</tabstop>
+  <tabstop>OutputText</tabstop>
+  <tabstop>ItemTable</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
