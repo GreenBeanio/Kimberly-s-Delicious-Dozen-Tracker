@@ -39,15 +39,11 @@ import UI.Orders as Orders
 # endregion Imports
 
 # region Parameters
-
 # Empty variables for mysql
 host = ""
 user = ""
 password = ""
 database = ""
-mysql_connection = ""
-mysql_status = ""
-
 # endregion Parameters
 
 # region Code
@@ -200,16 +196,6 @@ def GetDate():
 # Function to get the current time
 def GetTime():
     return datetime.datetime.now()
-
-
-# Load the configuration file
-host, user, password, database = load_config()
-# connect to mysql
-mysql_connection, mysql_status = connect_to_mysql()
-# If a error was given then exit the application
-if mysql_status == "Failure":
-    failure(mysql_connection)
-# endregion Code
 
 
 # Defining the Main Window
@@ -760,7 +746,9 @@ class OrdersWindow(QDialog):
         self.ui.setupUi(self)
         # Buttons
         self.ui.CustomersButton.clicked.connect(self.openCustomers)
-        self.ui.GetDateButton.clicked.connect(self.GetDate)
+        self.ui.GetOrderDateButton.clicked.connect(self.GetDate)
+        self.ui.GetPlannedDateButton.clicked.connect(self.GetDate)
+        self.ui.GetFinalDateButton.clicked.connect(self.GetDate)
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
@@ -775,7 +763,14 @@ class OrdersWindow(QDialog):
     # Get the date
     def GetDate(self):
         result = GetDate()
-        print(result)
+        # Get the name of the button pressed
+        pressed = self.sender().objectName()
+        if pressed == "GetOrderDateButton":
+            self.ui.OrderDate.setDate(QDate(result))
+        elif pressed == "GetPlannedDateButton":
+            self.ui.PlannedDate.setDate(QDate(result))
+        elif pressed == "GetFinalDateButton":
+            self.ui.FinalDate.setDate(QDate(result))
 
     # Slot for updating the table
     def updateTable(self):
@@ -784,6 +779,7 @@ class OrdersWindow(QDialog):
 
         # Getting the selected Row
 
+    # Get the selected row
     def SelectedRow(self):
         # Get the current selected cell
         cell = self.ui.OrderTable.currentIndex()
@@ -862,6 +858,16 @@ class OrdersWindow(QDialog):
         # Reload the table
         self.updateTable()
 
+
+# endregion Code
+
+# Load the configuration file for mysql
+host, user, password, database = load_config()
+# Test that mysql is working
+mysql_connection, mysql_status = connect_to_mysql()
+# If a error was given then exit the application
+if mysql_status == "Failure":
+    failure(mysql_connection)
 
 # Main App Launching
 app = QApplication(sys.argv)
