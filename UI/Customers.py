@@ -124,7 +124,7 @@ class Ui_CustomerDialog(object):
         self.StatusBox.setItemText(0, _translate("CustomerDialog", "Good Standing"))
         self.StatusBox.setItemText(1, _translate("CustomerDialog", "On The Fence"))
         self.StatusBox.setItemText(2, _translate("CustomerDialog", "Blacklisted"))
-        self.EmailLabel.setText(_translate("CustomerDialog", "Emai:"))
+        self.EmailLabel.setText(_translate("CustomerDialog", "Email:"))
         self.StatusLabel.setText(_translate("CustomerDialog", "Status:"))
         self.PhoneLabel.setText(_translate("CustomerDialog", "Phone Number:"))
         self.CustomerNote.setText(_translate("CustomerDialog", "Note:"))

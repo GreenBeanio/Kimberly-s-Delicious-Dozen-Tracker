@@ -41,7 +41,7 @@
          <widget class="QDateEdit" name="OrderDate"/>
         </item>
         <item row="0" column="2">
-         <widget class="QLineEdit" name="OrderText_2"/>
+         <widget class="QLineEdit" name="OrderText"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="CustomerLabel">
@@ -68,7 +68,7 @@
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="QTextEdit" name="OrderText"/>
+         <widget class="QTextEdit" name="NoteText"/>
         </item>
         <item row="1" column="2">
          <widget class="QLineEdit" name="CustomerText"/>
@@ -210,7 +210,7 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>OrderText_2</tabstop>
+  <tabstop>OrderText</tabstop>
   <tabstop>CustomerText</tabstop>
   <tabstop>CustomersButton</tabstop>
   <tabstop>OrderDate</tabstop>
@@ -219,7 +219,7 @@
   <tabstop>FinalDate</tabstop>
   <tabstop>PriceText</tabstop>
   <tabstop>StatusBox</tabstop>
-  <tabstop>OrderText</tabstop>
+  <tabstop>NoteText</tabstop>
   <tabstop>AddButton</tabstop>
   <tabstop>UpdateButton</tabstop>
   <tabstop>DeleteButton</tabstop>

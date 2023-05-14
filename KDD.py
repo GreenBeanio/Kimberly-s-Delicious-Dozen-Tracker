@@ -111,7 +111,7 @@ def MYSQL_General_Query(query):
         connection.commit()
         return "Successful Query"
     except Error as error:
-        return error
+        return str(error)
 
 
 # Function to get lists of query results
@@ -258,6 +258,10 @@ class ActivitiesWindow(QDialog):
         super().__init__(parent)
         self.ui = Activities.Ui_ActivitiesDialog()
         self.ui.setupUi(self)
+        # Buttons
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         # Load the table
         self.updateTable()
 
@@ -265,6 +269,65 @@ class ActivitiesWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM activity ORDER BY activityName"
         MySQL_Into_Table(self.ui.ActivityTable, Query)
+
+    # Getting the selected Row
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.ActivityTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.ActivityTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Function to get the information from gui elements
+    def GetValues(self):
+        # Get element values
+        activity = self.ui.ActivityText.text()
+        return activity
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO activity VALUES (NULL, "{values}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'UPDATE activity SET activityName="{values}" WHERE activityId={value}'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM activity WHERE activityId={value}"
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Defining the Customers Window
@@ -511,6 +574,10 @@ class ItemsWindow(QDialog):
         super().__init__(parent)
         self.ui = Items.Ui_ItemsDialog()
         self.ui.setupUi(self)
+        # Buttons
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         # Load table
         self.updateTable()
 
@@ -518,6 +585,66 @@ class ItemsWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM items"
         MySQL_Into_Table(self.ui.ItemTable, Query)
+
+    # Getting the selected Row
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.ItemTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.ItemTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Function to get the information from gui elements
+    def GetValues(self):
+        # Get element values
+        item_name = self.ui.ItemText.text()
+        item_price = self.ui.PriceText.text()
+        return item_name, item_price
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO items VALUES (NULL, "{values[0]}", "{values[1]}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'UPDATE items SET itemName="{values[0]}", price="{values[1]}" WHERE itemId={value}'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM items WHERE itemId={value}"
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Defining the OrderItems Window
@@ -531,6 +658,11 @@ class OrderItemsWindow(QDialog):
         # Buttons
         self.ui.OrdersButton.clicked.connect(self.openWindow)
         self.ui.ItemsButton.clicked.connect(self.openWindow)
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # OrderChanged
+        self.ui.OrderText.textChanged.connect(self.updateTable)
         # Load Table on load
         self.updateTable()
 
@@ -550,8 +682,72 @@ class OrderItemsWindow(QDialog):
     # Slot for updating the table
     def updateTable(self):
         orderName = self.ui.OrderText.text()
-        Query = f"SELECT * FROM orderitems WHERE orderName = {orderName}"
+        Query = f'SELECT * FROM orderitems WHERE orderName = "{orderName}"'
         MySQL_Into_Table(self.ui.OrderItemTable, Query)
+
+        # Getting the selected Row
+
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.OrderItemTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.OrderItemTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Function to get the information from gui elements
+    def GetValues(self):
+        # Get element values
+        order_name = self.ui.OrderText.text()
+        item = self.ui.ItemText.text()
+        quantity = self.ui.QuantityText.text()
+        price = self.ui.PriceText.text()
+        note = self.ui.NoteText.toPlainText()
+        return order_name, item, quantity, price, note
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO orderitems VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'UPDATE orderitems SET orderName="{values[0]}", itemName="{values[1]}", quantity="{values[2]}", price="{values[3]}", note="{values[4]}" WHERE id={value}'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM orderitems WHERE id={value}"
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Defining the Orders Window
@@ -565,6 +761,9 @@ class OrdersWindow(QDialog):
         # Buttons
         self.ui.CustomersButton.clicked.connect(self.openCustomers)
         self.ui.GetDateButton.clicked.connect(self.GetDate)
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         # Update table
         self.updateTable()
 
@@ -582,6 +781,86 @@ class OrdersWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM orders"
         MySQL_Into_Table(self.ui.OrderTable, Query)
+
+        # Getting the selected Row
+
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.OrderTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.OrderTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Function to get the information from gui elements
+    def GetValues(self):
+        # Get dates
+        order_date = self.ui.OrderDate.date().toString("yyyy-MM-dd")
+        order_date = datetime.datetime.strptime(order_date, "%Y-%m-%d").date()
+        planned_date = self.ui.PlannedDate.date().toString("yyyy-MM-dd")
+        planned_date = datetime.datetime.strptime(planned_date, "%Y-%m-%d").date()
+        final_date = self.ui.FinalDate.date().toString("yyyy-MM-dd")
+        final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
+        # Get other values
+        order_name = self.ui.OrderText.text()
+        customer = self.ui.CustomerText.text()
+        price = self.ui.PriceText.text()
+        status = self.ui.StatusBox.currentText()
+        note = self.ui.NoteText.toPlainText()
+        return (
+            order_name,
+            customer,
+            note,
+            order_date,
+            planned_date,
+            final_date,
+            price,
+            status,
+        )
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO orders VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", "{values[5]}", "{values[6]}", "{values[7]}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'UPDATE orders SET orderName="{values[0]}", customer="{values[1]}", note="{values[2]}", orderDate="{values[3]}", plannedDate="{values[4]}", finalDate="{values[5]}", price="{values[6]}", status="{values[7]}" WHERE orderId={value}'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM orders WHERE orderId={value}"
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Main App Launching
