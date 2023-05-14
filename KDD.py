@@ -248,7 +248,6 @@ class MainWindow(QDialog):
             window = OrdersWindow(self)
         # Open the selected window
         window.show()
-        # window.exec()
 
 
 # Defining the Activities Window
@@ -259,6 +258,13 @@ class ActivitiesWindow(QDialog):
         super().__init__(parent)
         self.ui = Activities.Ui_ActivitiesDialog()
         self.ui.setupUi(self)
+        # Load the table
+        self.updateTable()
+
+    # Slot for updating the table
+    def updateTable(self):
+        Query = f"SELECT * FROM activity ORDER BY activityName"
+        MySQL_Into_Table(self.ui.ActivityTable, Query)
 
 
 # Defining the Customers Window
@@ -269,6 +275,82 @@ class CustomersWindow(QDialog):
         super().__init__(parent)
         self.ui = Customers.Ui_CustomerDialog()
         self.ui.setupUi(self)
+        # Buttons
+        self.ui.AddButton.clicked.connect(self.AddEntry)
+        self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
+        self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # Load table
+        self.updateTable()
+
+    # Slot for updating the table
+    def updateTable(self):
+        Query = f"SELECT * FROM customers"
+        MySQL_Into_Table(self.ui.CustomerTable, Query)
+
+    # Getting the selected Row
+    def SelectedRow(self):
+        # Get the current selected cell
+        cell = self.ui.CustomerTable.currentIndex()
+        column = 0  # cell.column()
+        row = cell.row()
+        # Get the data model the table view is using
+        model = self.ui.CustomerTable.model()
+        # Get the index of the model from the cell earlier
+        index = model.index(row, column)
+        # Get the actual value of the cell
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Return the value
+        return value
+
+    # Function to get the information from gui elements
+    def GetValues(self):
+        # Get element values
+        company_name = self.ui.CompanyText.text()
+        contact_name = self.ui.ContactText.text()
+        email = self.ui.EmailText.text()
+        phone = self.ui.PhoneText.text()
+        address = self.ui.AddressText.text()
+        status = self.ui.StatusBox.currentText()
+        note = self.ui.NoteText.toPlainText()
+        return company_name, contact_name, email, phone, address, status, note
+
+    # Slot for Adding an entry
+    def AddEntry(self):
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'INSERT INTO customers VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", NULL, NULL, "{values[5]}", "{values[6]}")'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Updating an entry
+    def UpdateEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Get element values
+        values = self.GetValues()
+        # Create query
+        Query = f'UPDATE customers SET companyName="{values[0]}", contactName="{values[1]}", email="{values[2]}", phoneNumber="{values[3]}", address="{values[4]}", status="{values[5]}", note="{values[6]}" WHERE customerId={value}'
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
+
+    # Slot for Deleting an entry
+    def DeleteEntry(self):
+        # Get the selected cell
+        value = self.SelectedRow()
+        # Query to delete the entry
+        Query = f"DELETE FROM customers WHERE customerId={value}"
+        # Get result of the query
+        result = MYSQL_General_Query(Query)
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
 
 # Defining the Log Window
@@ -331,7 +413,7 @@ class LogWindow(QDialog):
         # date_selection = self.ui.DataSelect.date().toString("yyyy.MM.dd")
         # date_selection = datetime.datetime.strptime(date_selection, "%Y.%m.%d")
         # date_selection = date_selection.strftime("%Y-%m-%d")
-        Query = f'SELECT * FROM log WHERE date = "{date_selection}"'
+        Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY startTime'
         MySQL_Into_Table(self.ui.LogTable, Query)
 
     # Slot for Adding an entry
@@ -432,6 +514,13 @@ class ItemsWindow(QDialog):
         super().__init__(parent)
         self.ui = Items.Ui_ItemsDialog()
         self.ui.setupUi(self)
+        # Load table
+        self.updateTable()
+
+    # Slot for updating the table
+    def updateTable(self):
+        Query = f"SELECT * FROM items"
+        MySQL_Into_Table(self.ui.ItemTable, Query)
 
 
 # Defining the OrderItems Window
@@ -445,6 +534,8 @@ class OrderItemsWindow(QDialog):
         # Buttons
         self.ui.OrdersButton.clicked.connect(self.openWindow)
         self.ui.ItemsButton.clicked.connect(self.openWindow)
+        # Load Table on load
+        self.updateTable()
 
     # Slot for opening the other windows
     def openWindow(self):
@@ -458,7 +549,12 @@ class OrderItemsWindow(QDialog):
             window = ItemsWindow(self)
         # Open the selected window
         window.show()
-        # window.exec()
+
+    # Slot for updating the table
+    def updateTable(self):
+        orderName = self.ui.OrderText.text()
+        Query = f"SELECT * FROM orderitems WHERE orderName = {orderName}"
+        MySQL_Into_Table(self.ui.OrderItemTable, Query)
 
 
 # Defining the Orders Window
@@ -472,17 +568,23 @@ class OrdersWindow(QDialog):
         # Buttons
         self.ui.CustomersButton.clicked.connect(self.openCustomers)
         self.ui.GetDateButton.clicked.connect(self.GetDate)
+        # Update table
+        self.updateTable()
 
     # Slot for opening the customers window
     def openCustomers(self):
         window = CustomersWindow(self)
         window.show()
-        # window.exec()
 
     # Get the date
     def GetDate(self):
         result = GetDate()
         print(result)
+
+    # Slot for updating the table
+    def updateTable(self):
+        Query = f"SELECT * FROM orders"
+        MySQL_Into_Table(self.ui.OrderTable, Query)
 
 
 # Main App Launching
