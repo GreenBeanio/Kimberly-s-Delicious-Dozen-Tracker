@@ -42,6 +42,8 @@ class LogWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         # Date selection changed
         self.ui.DataSelect.dateChanged.connect(self.updateTable)
+        # Table clicked
+        self.ui.LogTable.clicked.connect(self.updateValues)
         # Load Table on load
         self.updateTable()
 
@@ -78,6 +80,31 @@ class LogWindow(QDialog):
         date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
         Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY startTime'
         MySQL_Into_Table(self.ui.LogTable, Query, self.mysql_cred)
+
+    # Slot for updating the values in the fields based off the table clicked
+    def updateValues(self):
+        # Get the current location in the table
+        cell = self.ui.LogTable.currentIndex()
+        row = cell.row()
+        # Get the model
+        model = self.ui.LogTable.model()
+        # Get the index and column count
+        index = model.index(row, 0)
+        column_count = model.columnCount(index)
+        # List to hold results
+        results = []
+        # Get the value from each column in the row
+        for col in range(0, column_count):
+            index = model.index(row, col)
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+            results.append(value)
+        # Set the results into the elements
+        self.ui.DataSelect.setDate(QDate.fromString(results[1], "yyyy-MM-dd"))
+        self.ui.StartSelect.setTime(QTime.fromString(results[2], "HH:mm:ss"))
+        self.ui.EndSelect.setTime(QTime.fromString(results[3], "HH:mm:ss"))
+        self.ui.ActivitiesText.setText(results[6])
+        self.ui.OrderText.setText(results[7])
+        self.ui.NoteBox.setText(results[5])
 
     # Getting the selected Row
     def SelectedRow(self):
