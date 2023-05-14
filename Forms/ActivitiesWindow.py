@@ -31,6 +31,8 @@ class ActivitiesWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # Table clicked
+        self.ui.ActivityTable.clicked.connect(self.updateValues)
         # Load the table
         self.updateTable()
 
@@ -38,6 +40,19 @@ class ActivitiesWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM activity ORDER BY activityName"
         MySQL_Into_Table(self.ui.ActivityTable, Query, self.mysql_cred)
+
+    # Slot for updating the values in the fields based off the table clicked
+    def updateValues(self):
+        # Get the current location in the table
+        cell = self.ui.ActivityTable.currentIndex()
+        row = cell.row()
+        # Get the model
+        model = self.ui.ActivityTable.model()
+        # Get the index and value
+        index = model.index(row, 1)
+        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Set the results into the elements
+        self.ui.ActivityText.setText(value)
 
     # Getting the selected Row
     def SelectedRow(self):

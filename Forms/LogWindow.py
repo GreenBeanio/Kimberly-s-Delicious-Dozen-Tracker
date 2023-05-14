@@ -102,9 +102,9 @@ class LogWindow(QDialog):
         self.ui.DataSelect.setDate(QDate.fromString(results[1], "yyyy-MM-dd"))
         self.ui.StartSelect.setTime(QTime.fromString(results[2], "HH:mm:ss"))
         self.ui.EndSelect.setTime(QTime.fromString(results[3], "HH:mm:ss"))
+        self.ui.NoteBox.setText(results[5])
         self.ui.ActivitiesText.setText(results[6])
         self.ui.OrderText.setText(results[7])
-        self.ui.NoteBox.setText(results[5])
 
     # Getting the selected Row
     def SelectedRow(self):

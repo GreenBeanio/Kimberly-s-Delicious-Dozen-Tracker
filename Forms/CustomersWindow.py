@@ -31,6 +31,8 @@ class CustomersWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # Table clicked
+        self.ui.CustomerTable.clicked.connect(self.updateValues)
         # Load table
         self.updateTable()
 
@@ -38,6 +40,32 @@ class CustomersWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM customers"
         MySQL_Into_Table(self.ui.CustomerTable, Query, self.mysql_cred)
+
+    # Slot for updating the values in the fields based off the table clicked
+    def updateValues(self):
+        # Get the current location in the table
+        cell = self.ui.CustomerTable.currentIndex()
+        row = cell.row()
+        # Get the model
+        model = self.ui.CustomerTable.model()
+        # Get the index and column count
+        index = model.index(row, 0)
+        column_count = model.columnCount(index)
+        # List to hold results
+        results = []
+        # Get the value from each column in the row
+        for col in range(0, column_count):
+            index = model.index(row, col)
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+            results.append(value)
+        # Set the results into the elements
+        self.ui.CompanyText.setText(results[1])
+        self.ui.ContactText.setText(results[2])
+        self.ui.EmailText.setText(results[3])
+        self.ui.PhoneText.setText(results[4])
+        self.ui.AddressText.setText(results[5])
+        self.ui.StatusBox.setCurrentText(results[8])
+        self.ui.NoteText.setText(results[9])
 
     # Getting the selected Row
     def SelectedRow(self):

@@ -38,6 +38,8 @@ class OrdersWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # Table clicked
+        self.ui.OrderTable.clicked.connect(self.updateValues)
         # Update table
         self.updateTable()
 
@@ -64,6 +66,33 @@ class OrdersWindow(QDialog):
         MySQL_Into_Table(self.ui.OrderTable, Query, self.mysql_cred)
 
         # Getting the selected Row
+
+    # Slot for updating the values in the fields based off the table clicked
+    def updateValues(self):
+        # Get the current location in the table
+        cell = self.ui.OrderTable.currentIndex()
+        row = cell.row()
+        # Get the model
+        model = self.ui.OrderTable.model()
+        # Get the index and column count
+        index = model.index(row, 0)
+        column_count = model.columnCount(index)
+        # List to hold results
+        results = []
+        # Get the value from each column in the row
+        for col in range(0, column_count):
+            index = model.index(row, col)
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+            results.append(value)
+        # Set the results into the elements
+        self.ui.OrderText.setText(results[1])
+        self.ui.CustomerText.setText(results[2])
+        self.ui.NoteText.setText(results[3])
+        self.ui.OrderDate.setDate(QDate.fromString(results[4], "yyyy-MM-dd"))
+        self.ui.PlannedDate.setDate(QDate.fromString(results[5], "yyyy-MM-dd"))
+        self.ui.FinalDate.setDate(QDate.fromString(results[6], "yyyy-MM-dd"))
+        self.ui.PriceText.setText(results[7])
+        self.ui.StatusBox.setCurrentText(results[8])
 
     # Get the selected row
     def SelectedRow(self):

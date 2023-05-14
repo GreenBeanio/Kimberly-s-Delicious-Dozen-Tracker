@@ -30,6 +30,8 @@ class ItemsWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        # Table clicked
+        self.ui.ItemTable.clicked.connect(self.updateValues)
         # Load table
         self.updateTable()
 
@@ -37,6 +39,27 @@ class ItemsWindow(QDialog):
     def updateTable(self):
         Query = f"SELECT * FROM items"
         MySQL_Into_Table(self.ui.ItemTable, Query, self.mysql_cred)
+
+    # Slot for updating the values in the fields based off the table clicked
+    def updateValues(self):
+        # Get the current location in the table
+        cell = self.ui.ItemTable.currentIndex()
+        row = cell.row()
+        # Get the model
+        model = self.ui.ItemTable.model()
+        # Get the index and column count
+        index = model.index(row, 0)
+        column_count = model.columnCount(index)
+        # List to hold results
+        results = []
+        # Get the value from each column in the row
+        for col in range(0, column_count):
+            index = model.index(row, col)
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+            results.append(value)
+        # Set the results into the elements
+        self.ui.ItemText.setText(results[1])
+        self.ui.PriceText.setText(results[2])
 
     # Getting the selected Row
     def SelectedRow(self):
