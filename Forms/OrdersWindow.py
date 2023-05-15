@@ -13,6 +13,7 @@ import UI.Orders as Orders
 # My code
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
+from Mine.MySQLFunc import Process_Null
 
 # My Forms
 import Forms.CustomersWindow as CustomersWindow
@@ -146,9 +147,13 @@ class OrdersWindow(QDialog):
     # Slot for Adding an entry
     def AddEntry(self):
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        print(values_data)
+        values = Process_Null(values_data)
+        values = values.Null_Values()
+        print(values)
         # Create query
-        Query = f'INSERT INTO orders VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", "{values[5]}", "{values[6]}", "{values[7]}", "{values[8]}")'
+        Query = f"INSERT INTO orders VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]}, {values[6]}, {values[7]}, {values[8]})"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
@@ -161,9 +166,11 @@ class OrdersWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'UPDATE orders SET orderName="{values[0]}", customer="{values[1]}", note="{values[2]}", orderDate="{values[3]}", plannedDate="{values[4]}", finalDate="{values[5]}", price="{values[6]}", paymentType="{values[7]}", status="{values[8]}" WHERE orderId={value}'
+        Query = f"UPDATE orders SET orderName={values[0]}, customer={values[1]}, note={values[2]}, orderDate={values[3]}, plannedDate={values[4]}, finalDate={values[5]}, price={values[6]}, paymentType={values[7]}, status={values[8]} WHERE orderId={value}"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

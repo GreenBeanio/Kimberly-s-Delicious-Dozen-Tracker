@@ -16,6 +16,7 @@ from Mine.MySQLFunc import MYSQL_General_Query
 # My Forms
 import Forms.ItemsWindow as ItemsWindow
 import Forms.OrdersWindow as OrdersWindow
+from Mine.MySQLFunc import Process_Null
 
 # endregion Imports
 
@@ -113,9 +114,11 @@ class OrderItemsWindow(QDialog):
     # Slot for Adding an entry
     def AddEntry(self):
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'INSERT INTO orderitems VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}")'
+        Query = f"INSERT INTO orderitems VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]})"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
@@ -128,9 +131,11 @@ class OrderItemsWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'UPDATE orderitems SET orderName="{values[0]}", itemName="{values[1]}", quantity="{values[2]}", price="{values[3]}", note="{values[4]}" WHERE id={value}'
+        Query = f"UPDATE orderitems SET orderName={values[0]}, itemName={values[1]}, quantity={values[2]}, price={values[3]}, note={values[4]} WHERE id={value}"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

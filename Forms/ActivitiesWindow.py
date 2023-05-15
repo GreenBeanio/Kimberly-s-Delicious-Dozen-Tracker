@@ -12,6 +12,7 @@ import UI.Activities as Activities
 # My code
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
+from Mine.MySQLFunc import Process_Null
 
 
 # endregion Imports
@@ -73,14 +74,18 @@ class ActivitiesWindow(QDialog):
     def GetValues(self):
         # Get element values
         activity = self.ui.ActivityText.text()
-        return activity
+        # Doing this for other code to work properly
+        blank = ""
+        return activity, blank
 
     # Slot for Adding an entry
     def AddEntry(self):
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'INSERT INTO activity VALUES (NULL, "{values}")'
+        Query = f"INSERT INTO activity VALUES (NULL, {values[0]})"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
@@ -93,9 +98,11 @@ class ActivitiesWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'UPDATE activity SET activityName="{values}" WHERE activityId={value}'
+        Query = f"UPDATE activity SET activityName={values[0]} WHERE activityId={value}"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

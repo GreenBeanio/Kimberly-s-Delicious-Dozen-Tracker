@@ -13,6 +13,7 @@ import UI.Log as Log
 # My code
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
+from Mine.MySQLFunc import Process_Null
 
 # My Forms
 import Forms.ActivitiesWindow as ActivitiesWindow
@@ -143,34 +144,12 @@ class LogWindow(QDialog):
         orderName = self.ui.OrderText.text()
         return start_time, end_time, note, activity, orderName
 
-    # Function for trying to handle null values
-    def Null_Values(self, modify):
-        values = list(modify)
-        # Attempting to allow for null values
-        for index, value in enumerate(values):
-            # If the value is a string
-            if type(value) == str:
-                # If it is empty then make it NULL
-                if value == "":
-                    values[index] = "NULL"
-                # If it isn't empty surround it in quotes
-                else:
-                    values[index] = f'"{value}"'
-            # If it's a date surround it in quotes
-            elif type(value) == datetime.datetime:
-                # If the date is the date for pseudo null treat it as such
-                if value == datetime.datetime(2000, 1, 1):
-                    values[index] = "NULL"
-                # If it's a valid date, then treat it as such
-                else:
-                    values[index] = f'"{value}"'
-        return values
-
     # Slot for Adding an entry
     def AddEntry(self):
         # Get element values
-        values = self.GetValues()
-        values = self.Null_Values(values)
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
         Query = f"INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ({values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]})"
         # Get result of the query
@@ -185,8 +164,9 @@ class LogWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Get element values
-        values = self.GetValues()
-        values = self.Null_Values(values)
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Query to update the value
         Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, note={values[2]}, activity={values[3]}, orderName={values[4]} WHERE logid={value}"
         # Get result of the query

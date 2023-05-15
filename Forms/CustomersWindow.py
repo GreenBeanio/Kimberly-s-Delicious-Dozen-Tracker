@@ -12,6 +12,7 @@ import UI.Customers as Customers
 # My code
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
+from Mine.MySQLFunc import Process_Null
 
 # endregion Imports
 
@@ -99,9 +100,11 @@ class CustomersWindow(QDialog):
     # Slot for Adding an entry
     def AddEntry(self):
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'INSERT INTO customers VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", "{values[5]}", NULL, NULL, "{values[6]}", "{values[7]}")'
+        Query = f"INSERT INTO customers VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]}, NULL, NULL, {values[6]}, {values[7]})"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
@@ -114,9 +117,11 @@ class CustomersWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Get element values
-        values = self.GetValues()
+        values_data = self.GetValues()
+        values = Process_Null(values_data)
+        values = values.Null_Values()
         # Create query
-        Query = f'UPDATE customers SET companyName="{values[0]}", contactName="{values[1]}", email="{values[2]}", phoneNumber="{values[3]}", socialMedia="{values[4]}, address="{values[5]}", status="{values[6]}", note="{values[7]}" WHERE customerId={value}'
+        Query = f"UPDATE customers SET companyName={values[0]}, contactName={values[1]}, email={values[2]}, phoneNumber={values[3]}, socialMedia={values[4]}, address={values[5]}, status={values[6]}, note={values[7]} WHERE customerId={value}"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

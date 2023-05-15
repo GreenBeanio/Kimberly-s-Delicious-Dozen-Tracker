@@ -78,6 +78,9 @@ class MySQL_Into_Table:
             Table = QueryTable(sql_panda, query_headers)
             # Set the table views model
             self.table.setModel(Table)
+            # Close the cursor and connection
+            cursor.close()
+            connection.close()
         except Error as error:
             return str(error)
 
@@ -104,9 +107,49 @@ class MYSQL_General_Query:
             cursor = connection.cursor()
             cursor.execute(self.query)
             connection.commit()
+            cursor.close()
+            connection.close()
             return "Successful Query"
         except Error as error:
             return str(error)
+
+
+# Used for handling null values and pseudo null values
+class Process_Null:
+    # Initialize class
+    def __init__(self, modify):
+        self.modify = modify
+        print(self.modify)
+
+    # Function for trying to handle null values
+    def Null_Values(self):
+        # If the value isn't a string then make it a list
+        values = list(self.modify)
+        # Attempting to allow for null values
+        for index, value in enumerate(values):
+            # If the value is a string
+            if type(value) == str:
+                # If it is empty then make it NULL
+                if value == "":
+                    values[index] = "NULL"
+                # If it isn't empty surround it in quotes
+                else:
+                    values[index] = f'"{value}"'
+            # If it's a datetime.datetime surround it in quotes
+            elif type(value) == datetime.datetime:
+                values[index] = f'"{value}"'
+            # If it's a datetime.time surround it in quotes
+            elif type(value) == datetime.time:
+                values[index] = f'"{value}"'
+            # If it's a date surround it in quotes
+            elif type(value) == datetime.date:
+                # If the date is the date for pseudo null treat it as such
+                if value == datetime.date(2000, 1, 1):
+                    values[index] = "NULL"
+                # If it's a valid date, then treat it as such
+                else:
+                    values[index] = f'"{value}"'
+        return values
 
 
 # endregion Code
