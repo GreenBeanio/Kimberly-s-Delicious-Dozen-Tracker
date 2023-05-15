@@ -72,8 +72,11 @@ class CustomersWindow(QDialog):
         model = self.ui.CustomerTable.model()
         # Get the index of the model from the cell earlier
         index = model.index(row, column)
-        # Get the actual value of the cell
-        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Get the actual value of the cell if one was actually selected
+        try:
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        except:
+            value = "Nothing Selected"
         # Return the value
         return value
 
@@ -109,18 +112,21 @@ class CustomersWindow(QDialog):
     def UpdateEntry(self):
         # Get the selected cell
         value = self.SelectedRow()
-        # Get element values
-        values_data = self.GetValues()
-        values = Process_Null(values_data)
-        values = values.Null_Values()
-        # Create query
-        Query = f"UPDATE customers SET companyName={values[0]}, contactName={values[1]}, email={values[2]}, phoneNumber={values[3]}, socialMedia={values[4]}, address={values[5]}, status={values[6]}, note={values[7]} WHERE customerId={value}"
-        # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
-        self.ui.OutputText.setText(result)
-        # Reload the table
-        self.updateTable()
+        if value != "Nothing Selected":
+            # Get element values
+            values_data = self.GetValues()
+            values = Process_Null(values_data)
+            values = values.Null_Values()
+            # Create query
+            Query = f"UPDATE customers SET companyName={values[0]}, contactName={values[1]}, email={values[2]}, phoneNumber={values[3]}, socialMedia={values[4]}, address={values[5]}, status={values[6]}, note={values[7]} WHERE customerId={value}"
+            # Get result of the query
+            query_result = MYSQL_General_Query(Query, self.mysql_cred)
+            result = query_result.MYSQL_General_Query()
+            self.ui.OutputText.setText(result)
+            # Reload the table
+            self.updateTable()
+        else:
+            self.ui.OutputText.setText(value)
 
     # Slot for Deleting an entry
     def DeleteEntry(self):

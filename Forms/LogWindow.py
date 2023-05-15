@@ -110,8 +110,11 @@ class LogWindow(QDialog):
         model = self.ui.LogTable.model()
         # Get the index of the model from the cell earlier
         index = model.index(row, column)
-        # Get the actual value of the cell
-        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        # Get the actual value of the cell if one was actually selected
+        try:
+            value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        except:
+            value = "Nothing Selected"
         # Return the value
         return value
 
@@ -153,18 +156,23 @@ class LogWindow(QDialog):
     def UpdateEntry(self):
         # Get the selected cell
         value = self.SelectedRow()
-        # Get element values
-        values_data = self.GetValues()
-        values = Process_Null(values_data)
-        values = values.Null_Values()
-        # Query to update the value
-        Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, note={values[2]}, activity={values[3]}, orderName={values[4]} WHERE logid={value}"
-        # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
-        self.ui.OutputText.setText(result)
-        # Reload the table
-        self.updateTable()
+        # If something was selected
+        if value != "Nothing Selected":
+            # Get element values
+            values_data = self.GetValues()
+            values = Process_Null(values_data)
+            values = values.Null_Values()
+            # Query to update the value
+            Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, note={values[2]}, activity={values[3]}, orderName={values[4]} WHERE logid={value}"
+            # Get result of the query
+            query_result = MYSQL_General_Query(Query, self.mysql_cred)
+            result = query_result.MYSQL_General_Query()
+            self.ui.OutputText.setText(result)
+            # Reload the table
+            self.updateTable()
+        # If something wasn't selected
+        else:
+            self.ui.OutputText.setText(value)
 
     # Slot for Deleting an entry
     def DeleteEntry(self):

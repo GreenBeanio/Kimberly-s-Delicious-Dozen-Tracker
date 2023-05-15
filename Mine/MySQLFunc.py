@@ -4,7 +4,8 @@
 from mysql.connector import connect, Error
 import datetime
 import pandas as pd
-from PyQt6.QtCore import Qt, QDate, QTime
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QHeaderView
 
 # My code
 from Mine.QueryTable import QueryTable
@@ -79,6 +80,19 @@ class MySQL_Into_Table:
             Table = QueryTable(sql_panda, query_headers)
             # Set the table views model
             self.table.setModel(Table)
+            # Get the table to resize in a nicer way
+            header = self.table.horizontalHeader()
+            for head in range(0, len(header)):
+                if head == 0:
+                    header.setSectionResizeMode(
+                        head, QHeaderView.ResizeMode.ResizeToContents
+                    )
+                elif head == len(header) - 1:
+                    header.setSectionResizeMode(head, QHeaderView.ResizeMode.Stretch)
+                else:
+                    header.setSectionResizeMode(
+                        head, QHeaderView.ResizeMode.Interactive
+                    )
             # Close the cursor and connection
             cursor.close()
             connection.close()
