@@ -4,6 +4,7 @@
 from mysql.connector import connect, Error
 import datetime
 import pandas as pd
+from PyQt6.QtCore import Qt, QDate, QTime
 
 # My code
 from Mine.QueryTable import QueryTable
@@ -114,7 +115,7 @@ class MYSQL_General_Query:
             return str(error)
 
 
-# Used for handling null values and pseudo null values
+# Used for handling null values and pseudo null values (for SQL)
 class Process_Null:
     # Initialize class
     def __init__(self, modify):
@@ -150,6 +151,33 @@ class Process_Null:
                 else:
                     values[index] = f'"{value}"'
         return values
+
+
+# Used for modifying what is displayed in the elements from the table selection
+class Display_Values:
+    # Initialize class
+    def __init__(self, model, cell):
+        self.model = model
+        self.cell = cell
+
+    # Function to modify the values
+    def Display_Values(self):
+        # Get the current location in the table
+        row = self.cell.row()
+        # Get the index and column count
+        index = self.model.index(row, 0)
+        column_count = self.model.columnCount(index)
+        # List to hold results
+        results = []
+        # Get the value from each column in the row
+        for col in range(0, column_count):
+            index = self.model.index(row, col)
+            value = self.model.data(index, Qt.ItemDataRole.DisplayRole)
+            # If the value is none set to blank?
+            if value == "None":
+                value = ""
+            results.append(value)
+        return results
 
 
 # endregion Code

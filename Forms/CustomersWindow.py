@@ -13,6 +13,7 @@ import UI.Customers as Customers
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Process_Null
+from Mine.MySQLFunc import Display_Values
 
 # endregion Imports
 
@@ -46,19 +47,11 @@ class CustomersWindow(QDialog):
     def updateValues(self):
         # Get the current location in the table
         cell = self.ui.CustomerTable.currentIndex()
-        row = cell.row()
         # Get the model
         model = self.ui.CustomerTable.model()
-        # Get the index and column count
-        index = model.index(row, 0)
-        column_count = model.columnCount(index)
-        # List to hold results
-        results = []
-        # Get the value from each column in the row
-        for col in range(0, column_count):
-            index = model.index(row, col)
-            value = model.data(index, Qt.ItemDataRole.DisplayRole)
-            results.append(value)
+        # Get the values
+        results = Display_Values(model, cell)
+        results = results.Display_Values()
         # Set the results into the elements
         self.ui.CompanyText.setText(results[1])
         self.ui.ContactText.setText(results[2])

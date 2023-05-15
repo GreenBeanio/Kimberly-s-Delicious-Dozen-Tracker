@@ -14,6 +14,7 @@ import UI.Log as Log
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Process_Null
+from Mine.MySQLFunc import Display_Values
 
 # My Forms
 import Forms.ActivitiesWindow as ActivitiesWindow
@@ -86,27 +87,16 @@ class LogWindow(QDialog):
     def updateValues(self):
         # Get the current location in the table
         cell = self.ui.LogTable.currentIndex()
-        row = cell.row()
         # Get the model
         model = self.ui.LogTable.model()
-        # Get the index and column count
-        index = model.index(row, 0)
-        column_count = model.columnCount(index)
-        # List to hold results
-        results = []
-        # Get the value from each column in the row
-        for col in range(0, column_count):
-            index = model.index(row, col)
-            value = model.data(index, Qt.ItemDataRole.DisplayRole)
-            results.append(value)
+        # Get the values
+        results = Display_Values(model, cell)
+        results = results.Display_Values()
         # Set the results into the elements
         self.ui.DataSelect.setDate(QDate.fromString(results[1], "yyyy-MM-dd"))
         self.ui.StartSelect.setTime(QTime.fromString(results[2], "HH:mm:ss"))
         self.ui.EndSelect.setTime(QTime.fromString(results[3], "HH:mm:ss"))
-        if results[5] == "None":
-            self.ui.NoteBox.setText("")
-        else:
-            self.ui.NoteBox.setText(results[5])
+        self.ui.NoteBox.setText(results[5])
         self.ui.ActivitiesText.setText(results[6])
         self.ui.OrderText.setText(results[7])
 

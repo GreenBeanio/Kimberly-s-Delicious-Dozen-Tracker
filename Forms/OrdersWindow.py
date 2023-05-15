@@ -14,6 +14,7 @@ import UI.Orders as Orders
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Process_Null
+from Mine.MySQLFunc import Display_Values
 
 # My Forms
 import Forms.CustomersWindow as CustomersWindow
@@ -77,26 +78,21 @@ class OrdersWindow(QDialog):
     def updateValues(self):
         # Get the current location in the table
         cell = self.ui.OrderTable.currentIndex()
-        row = cell.row()
         # Get the model
         model = self.ui.OrderTable.model()
-        # Get the index and column count
-        index = model.index(row, 0)
-        column_count = model.columnCount(index)
-        # List to hold results
-        results = []
-        # Get the value from each column in the row
-        for col in range(0, column_count):
-            index = model.index(row, col)
-            value = model.data(index, Qt.ItemDataRole.DisplayRole)
-            results.append(value)
+        # Get the values
+        results = Display_Values(model, cell)
+        results = results.Display_Values()
         # Set the results into the elements
         self.ui.OrderText.setText(results[1])
         self.ui.CustomerText.setText(results[2])
         self.ui.NoteText.setText(results[3])
         self.ui.OrderDate.setDate(QDate.fromString(results[4], "yyyy-MM-dd"))
         self.ui.PlannedDate.setDate(QDate.fromString(results[5], "yyyy-MM-dd"))
-        self.ui.FinalDate.setDate(QDate.fromString(results[6], "yyyy-MM-dd"))
+        if results[6] == "":
+            self.ui.FinalDate.setDate(QDate(2000, 1, 1))
+        else:
+            self.ui.FinalDate.setDate(QDate.fromString(results[6], "yyyy-MM-dd"))
         self.ui.PriceText.setText(results[7])
         self.ui.PaymentText.setText(results[8])
         self.ui.StatusBox.setCurrentText(results[9])
