@@ -13,11 +13,13 @@ import UI.OrderItems as OrderItems
 from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Display_Values
+from Mine.MySQLFunc import MYSQL_Return_Query
 
 # My Forms
 import Forms.ItemsWindow as ItemsWindow
 import Forms.OrdersWindow as OrdersWindow
 from Mine.MySQLFunc import Process_Null
+
 
 # endregion Imports
 
@@ -38,6 +40,7 @@ class OrderItemsWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
         # OrderChanged
         self.ui.OrderText.textChanged.connect(self.updateTable)
         # Table clicked
@@ -56,6 +59,13 @@ class OrderItemsWindow(QDialog):
             window = ItemsWindow.ItemsWindow(self.mysql_cred, self)
         # Open the selected window
         window.show()
+
+    # Calculate the price from the items in the order
+    def CalculatePrice(self):
+        Query = f'SELECT DISTINCT {self.ui.QuantityText.text()} * (SELECT price FROM Items WHERE itemName="{self.ui.ItemText.text()}") FROM orderitems'
+        result = MYSQL_Return_Query(Query, self.mysql_cred)
+        result = result.MYSQL_Return_Query()
+        self.ui.PriceText.setText(result)
 
     # Slot for updating the table
     def updateTable(self):

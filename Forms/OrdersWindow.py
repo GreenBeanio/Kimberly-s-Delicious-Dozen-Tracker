@@ -15,6 +15,7 @@ from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Process_Null
 from Mine.MySQLFunc import Display_Values
+from Mine.MySQLFunc import MYSQL_Return_Query
 
 # My Forms
 import Forms.CustomersWindow as CustomersWindow
@@ -41,6 +42,7 @@ class OrdersWindow(QDialog):
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.ResetButton.clicked.connect(self.ResetDate)
+        self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
         # Table clicked
         self.ui.OrderTable.clicked.connect(self.updateValues)
         # Update table
@@ -66,6 +68,13 @@ class OrdersWindow(QDialog):
             self.ui.PlannedDate.setDate(QDate(result))
         elif pressed == "GetFinalDateButton":
             self.ui.FinalDate.setDate(QDate(result))
+
+    # Calculate the price from the items in the order
+    def CalculatePrice(self):
+        Query = f'SELECT SUM(price) FROM orderitems WHERE orderName="{self.ui.OrderText.text()}"'
+        result = MYSQL_Return_Query(Query, self.mysql_cred)
+        result = result.MYSQL_Return_Query()
+        self.ui.PriceText.setText(result)
 
     # Slot for updating the table
     def updateTable(self):
@@ -144,10 +153,8 @@ class OrdersWindow(QDialog):
     def AddEntry(self):
         # Get element values
         values_data = self.GetValues()
-        print(values_data)
         values = Process_Null(values_data)
         values = values.Null_Values()
-        print(values)
         # Create query
         Query = f"INSERT INTO orders VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]}, {values[6]}, {values[7]}, {values[8]})"
         # Get result of the query

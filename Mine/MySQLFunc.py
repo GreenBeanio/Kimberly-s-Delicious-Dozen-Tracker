@@ -115,12 +115,45 @@ class MYSQL_General_Query:
             return str(error)
 
 
+# Used for MYSQL queries that return a value
+class MYSQL_Return_Query:
+    # Initialize class
+    def __init__(self, query, mysql):
+        self.query = query
+        self.host = mysql.host
+        self.user = mysql.user
+        self.password = mysql.password
+        self.database = mysql.database
+
+    # Function for mysql returning queries
+    def MYSQL_Return_Query(self):
+        try:
+            connection = connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database,
+            )
+            cursor = connection.cursor()
+            cursor.execute(self.query)
+            query_data = cursor.fetchone()
+            query_data = str(query_data[0])
+            connection.commit()
+            cursor.close()
+            connection.close()
+            if query_data != "None":
+                return query_data
+            else:
+                return ""
+        except Error as error:
+            return ""
+
+
 # Used for handling null values and pseudo null values (for SQL)
 class Process_Null:
     # Initialize class
     def __init__(self, modify):
         self.modify = modify
-        print(self.modify)
 
     # Function for trying to handle null values
     def Null_Values(self):

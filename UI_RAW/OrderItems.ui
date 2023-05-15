@@ -84,6 +84,13 @@
            </property>
           </widget>
          </item>
+         <item row="3" column="3">
+          <widget class="QPushButton" name="CalculatePrice">
+           <property name="text">
+            <string>CalculatePrice</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
