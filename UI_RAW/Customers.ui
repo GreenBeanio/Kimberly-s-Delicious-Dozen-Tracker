@@ -19,41 +19,30 @@
      <item>
       <layout class="QHBoxLayout" name="InputLayout">
        <item>
-        <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0" rowminimumheight="0,0,0,0,0,0,0">
-         <item row="4" column="2">
+        <layout class="QGridLayout" name="SelectionGrid" columnstretch="0,0,0" rowminimumheight="0,0,0,0,0,0,0,0">
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="CompanyText"/>
+         </item>
+         <item row="5" column="2">
           <widget class="QLineEdit" name="AddressText"/>
          </item>
-         <item row="2" column="2">
-          <widget class="QLineEdit" name="EmailText"/>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="AddressLabel">
+         <item row="7" column="0">
+          <widget class="QLabel" name="CustomerNote">
            <property name="text">
-            <string>Address:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="ContactLabel">
-           <property name="text">
-            <string>Contact Name:</string>
+            <string>Note:</string>
            </property>
           </widget>
          </item>
          <item row="1" column="2">
           <widget class="QLineEdit" name="ContactText"/>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="CompanyLabel">
-           <property name="text">
-            <string>Company Name:</string>
-           </property>
-          </widget>
+         <item row="2" column="2">
+          <widget class="QLineEdit" name="EmailText"/>
          </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="CompanyText"/>
+         <item row="3" column="2">
+          <widget class="QLineEdit" name="PhoneText"/>
          </item>
-         <item row="5" column="2">
+         <item row="6" column="2">
           <widget class="QComboBox" name="StatusBox">
            <item>
             <property name="text">
@@ -72,22 +61,12 @@
            </item>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="EmailLabel">
-           <property name="text">
-            <string>Email:</string>
-           </property>
-          </widget>
-         </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="StatusLabel">
+          <widget class="QLabel" name="AddressLabel">
            <property name="text">
-            <string>Status:</string>
+            <string>Address:</string>
            </property>
           </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QLineEdit" name="PhoneText"/>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="PhoneLabel">
@@ -96,15 +75,46 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="CustomerNote">
+         <item row="2" column="0">
+          <widget class="QLabel" name="EmailLabel">
            <property name="text">
-            <string>Note:</string>
+            <string>Email:</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="2">
+         <item row="7" column="2">
           <widget class="QTextEdit" name="NoteText"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="CompanyLabel">
+           <property name="text">
+            <string>Company Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="StatusLabel">
+           <property name="text">
+            <string>Status:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="ContactLabel">
+           <property name="text">
+            <string>Contact Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="SocialLabel">
+           <property name="text">
+            <string>Social Media:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLineEdit" name="SocialText"/>
          </item>
         </layout>
        </item>

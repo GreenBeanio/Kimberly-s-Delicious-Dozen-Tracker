@@ -97,7 +97,8 @@ class OrdersWindow(QDialog):
         self.ui.PlannedDate.setDate(QDate.fromString(results[5], "yyyy-MM-dd"))
         self.ui.FinalDate.setDate(QDate.fromString(results[6], "yyyy-MM-dd"))
         self.ui.PriceText.setText(results[7])
-        self.ui.StatusBox.setCurrentText(results[8])
+        self.ui.PaymentText.setText(results[8])
+        self.ui.StatusBox.setCurrentText(results[9])
 
     # Get the selected row
     def SelectedRow(self):
@@ -127,6 +128,7 @@ class OrdersWindow(QDialog):
         order_name = self.ui.OrderText.text()
         customer = self.ui.CustomerText.text()
         price = self.ui.PriceText.text()
+        payment = self.ui.PaymentText.text()
         status = self.ui.StatusBox.currentText()
         note = self.ui.NoteText.toPlainText()
         return (
@@ -137,6 +139,7 @@ class OrdersWindow(QDialog):
             planned_date,
             final_date,
             price,
+            payment,
             status,
         )
 
@@ -145,7 +148,7 @@ class OrdersWindow(QDialog):
         # Get element values
         values = self.GetValues()
         # Create query
-        Query = f'INSERT INTO orders VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", "{values[5]}", "{values[6]}", "{values[7]}")'
+        Query = f'INSERT INTO orders VALUES (NULL, "{values[0]}", "{values[1]}", "{values[2]}", "{values[3]}", "{values[4]}", "{values[5]}", "{values[6]}", "{values[7]}", "{values[8]}")'
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
@@ -160,7 +163,7 @@ class OrdersWindow(QDialog):
         # Get element values
         values = self.GetValues()
         # Create query
-        Query = f'UPDATE orders SET orderName="{values[0]}", customer="{values[1]}", note="{values[2]}", orderDate="{values[3]}", plannedDate="{values[4]}", finalDate="{values[5]}", price="{values[6]}", status="{values[7]}" WHERE orderId={value}'
+        Query = f'UPDATE orders SET orderName="{values[0]}", customer="{values[1]}", note="{values[2]}", orderDate="{values[3]}", plannedDate="{values[4]}", finalDate="{values[5]}", price="{values[6]}", paymentType="{values[7]}", status="{values[8]}" WHERE orderId={value}'
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()
