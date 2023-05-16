@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>576</height>
+    <width>964</width>
+    <height>764</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,6 +164,150 @@
             <string>Delete</string>
            </property>
           </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="SearchSection">
+         <item row="0" column="0" alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="SearchLabel">
+           <property name="text">
+            <string>Search Options</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QVBoxLayout" name="SearchContainer">
+           <item>
+            <layout class="QGridLayout" name="SearchGrid">
+             <item row="0" column="2">
+              <widget class="QCheckBox" name="EnableOrder">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QCheckBox" name="EnableActivity">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="ActivitySearchLabel">
+               <property name="text">
+                <string>Activity:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="OrderSearchLabel">
+               <property name="text">
+                <string>Order:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="ActivitySearch"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="OrderSearch"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="DateGrid" columnstretch="0,1,0,0">
+             <item row="1" column="2">
+              <widget class="QPushButton" name="GetDateEndDate">
+               <property name="text">
+                <string>Get Date</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDateEdit" name="StartDate"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="EndDateLabel">
+               <property name="text">
+                <string>End Date:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDateEdit" name="EndDate"/>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="StartDateLabel">
+               <property name="text">
+                <string>Start Date:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="GetDateStartDate">
+               <property name="text">
+                <string>Get Date</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QCheckBox" name="EnableStart">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QCheckBox" name="EnableEnd">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="CalculateSeciton">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="CalculateLabel">
+           <property name="text">
+            <string>Calculate</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="CalculateContainer">
+           <item>
+            <widget class="QLabel" name="CalculateTimeLabel">
+             <property name="text">
+              <string>Total Hours:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="TotalHours">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="GetTotalHours">
+             <property name="text">
+              <string>Get Total Hours</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>

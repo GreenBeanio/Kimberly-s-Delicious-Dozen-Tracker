@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
+    <width>709</width>
     <height>613</height>
    </rect>
   </property>
@@ -117,6 +117,55 @@
           <widget class="QPushButton" name="DeleteButton">
            <property name="text">
             <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="SearchGrid">
+         <item row="0" column="0" alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="SearchLabel">
+           <property name="text">
+            <string>Search Options</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="OrderSearchLabel">
+           <property name="text">
+            <string>Order Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="OrderSearchText"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="ItemSearchLabel">
+           <property name="text">
+            <string>Item Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="EnableOrder">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="ItemSearchText"/>
+         </item>
+         <item row="1" column="3">
+          <widget class="QCheckBox" name="EnableItem">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>

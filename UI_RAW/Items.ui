@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>241</width>
+    <width>585</width>
     <height>340</height>
    </rect>
   </property>
@@ -72,6 +72,38 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="SearchSection">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="SearchSectionLabel">
+           <property name="text">
+            <string>Search Options</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="SearchLayout">
+           <item>
+            <widget class="QLabel" name="SearchLabel">
+             <property name="text">
+              <string>Item Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit"/>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="EnableSearch">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="ResultLayout">
          <item>
           <widget class="QLabel" name="OutputLabel">
@@ -81,7 +113,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="OutputText">
+          <widget class="QLineEdit" name="SearchText">
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -104,7 +136,7 @@
   <tabstop>AddButton</tabstop>
   <tabstop>UpdateButton</tabstop>
   <tabstop>DeleteButton</tabstop>
-  <tabstop>OutputText</tabstop>
+  <tabstop>SearchText</tabstop>
   <tabstop>ItemTable</tabstop>
  </tabstops>
  <resources/>

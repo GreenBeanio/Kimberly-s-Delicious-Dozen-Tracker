@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
+    <width>376</width>
     <height>392</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="MainLayout" stretch="0,0,3">
      <item>
-      <layout class="QVBoxLayout" name="ActivityLayout" stretch="0,0">
-       <item alignment="Qt::AlignHCenter">
+      <layout class="QHBoxLayout" name="ActivityLayout">
+       <item>
         <widget class="QLabel" name="ActivityLabel">
          <property name="text">
           <string>Activity:</string>
@@ -64,6 +64,38 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="SearchSection">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="SearchSectionLabel">
+           <property name="text">
+            <string>Search Options</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="SearchLayout">
+           <item>
+            <widget class="QLabel" name="SearchLabel">
+             <property name="text">
+              <string>Activity:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="SearchText"/>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="EnableSearch">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="ResultLayout">
          <item>
           <widget class="QLabel" name="OutputLabel">
@@ -91,7 +123,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>ActivityText</tabstop>
   <tabstop>AddButton</tabstop>
   <tabstop>UpdateButton</tabstop>
   <tabstop>DeleteButton</tabstop>
