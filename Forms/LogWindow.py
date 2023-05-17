@@ -96,7 +96,8 @@ class LogWindow(QDialog):
             # If the endDate isn't enabled search for just that date
             else:
                 sql = f'{sql}date = "{self.ui.StartDate.date().toString("yyyy-MM-dd")}"'
-        sql = f"{sql} ORDER BY date, startTime"
+        # Order the results by the date and then start time, heck even end time why not
+        sql = f"{sql} ORDER BY date, startTime, endTime"
         return sql
 
     def TotalHours(self):

@@ -180,7 +180,7 @@ class Process_Null:
 
     # Function for trying to handle null values
     def Null_Values(self):
-        # If the value isn't a string then make it a list
+        # Make the values into a list (don't pass a string)
         values = list(self.modify)
         # Attempting to allow for null values
         for index, value in enumerate(values):

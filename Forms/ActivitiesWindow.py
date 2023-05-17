@@ -40,9 +40,26 @@ class ActivitiesWindow(QDialog):
         # Load the table
         self.updateTable()
 
+    # Function to create sql
+    def Create_SQL(self, start):
+        # Used to store the query
+        if start == "":
+            sql = "SELECT * FROM activity"
+        else:
+            sql = start
+        # Get the enabled status of the options
+        searchEnabled = self.ui.EnableSearch.isChecked()
+        # If the search is enabled
+        if searchEnabled:
+            # Get the sql
+            sql = f'{sql} WHERE activityName LIKE "%{self.ui.SearchText.text()}%"'
+        # Order by the activityName, because I think that'll be better with the activity naming convention being used
+        sql = f"{sql} ORDER BY activityName"
+        return sql
+
     # Slot for updating the table
     def updateTable(self):
-        Query = f"SELECT * FROM activity ORDER BY activityName"
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.ActivityTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked

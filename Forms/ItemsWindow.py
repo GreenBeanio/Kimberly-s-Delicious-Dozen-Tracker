@@ -40,9 +40,26 @@ class ItemsWindow(QDialog):
         # Load table
         self.updateTable()
 
+    # Function to create sql
+    def Create_SQL(self, start):
+        # Used to store the query
+        if start == "":
+            sql = "SELECT * FROM items"
+        else:
+            sql = start
+        # Get the enabled status of the options
+        searchEnabled = self.ui.EnableSearch.isChecked()
+        # If the search is enabled
+        if searchEnabled:
+            # Get the sql
+            sql = f'{sql} WHERE itemName LIKE "%{self.ui.SearchText.text()}%"'
+        # Order by the itemName (might change this later)
+        sql = f"{sql} ORDER BY itemName"
+        return sql
+
     # Slot for updating the table
     def updateTable(self):
-        Query = f"SELECT * FROM items"
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.ItemTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked

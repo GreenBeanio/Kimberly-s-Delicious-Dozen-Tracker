@@ -85,9 +85,81 @@ class OrdersWindow(QDialog):
         result = result.MYSQL_Return_Query()
         self.ui.PriceText.setText(result)
 
+    # Function to create sql
+    def Create_SQL(self, start):
+        # Used to store the query
+        if start == "":
+            sql = "SELECT * FROM orders"
+        else:
+            sql = start
+        # Get the enabled status of the options
+        orderEnabled = self.ui.OrderEnable.isChecked()
+        customerEnabled = self.ui.CustomerEnable.isChecked()
+        statusEnabled = self.ui.StatusEnable.isChecked()
+        dateEnabled = self.ui.EnableDate.isChecked()
+        # If any of the search options are enabled
+        if orderEnabled or customerEnabled or statusEnabled or dateEnabled:
+            sql = f"{sql} WHERE "
+        # If the order search is enabled
+        if orderEnabled:
+            # Get the sql
+            sql = f'{sql}orderName LIKE "%{self.ui.OrderSearchText.text()}%"'
+            # Check if any down the line are enabled
+            if customerEnabled or statusEnabled or dateEnabled:
+                sql = f"{sql} AND "
+        # If the customer search is enabled
+        if customerEnabled:
+            # Get the sql
+            sql = f'{sql}customer = "{self.ui.CustomerSearchText.text()}"'
+            # Check if any down the line are enabled
+            if statusEnabled or dateEnabled:
+                sql = f"{sql} AND "
+        # If the status search is enabled
+        if statusEnabled:
+            # Get the sql
+            sql = f'{sql}status = "{self.ui.StatusComboSearch.currentText()}"'
+            # Check if any down the line are enabled
+            if dateEnabled:
+                sql = f"{sql} AND "
+        # If the date search is enabled
+        if dateEnabled:
+            # Get the type of date we're searching for
+            date_type = self.ui.DateTypeBox.currentText()
+            if date_type == "Order Date":
+                date_type = "orderDate"
+            elif date_type == "Planned Date":
+                date_type = "plannedDate"
+            elif date_type == "Final Date":
+                date_type = "finalDate"
+            # Get the date values
+            start_date = self.ui.StartDateSelect.date().toString("yyyy-MM-dd")
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_date = self.ui.EndDateSelect.date().toString("yyyy-MM-dd")
+            end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            values_data = [start_date, end_date]
+            values = Process_Null(values_data)
+            values = values.Null_Values()
+            # If the start date isn't null
+            if values[0] != "Null":
+                # if the end date isn't null
+                if values[1] != "Null":
+                    sql = f'{sql}{date_type} BETWEEN "{self.ui.StartDateSelect.date().toString("yyyy-MM-dd")}" AND "{self.ui.EndDateSelect.date().toString("yyyy-MM-dd")}"'
+                else:
+                    sql = f'{sql}{date_type} = "{self.ui.StartDateSelect.date().toString("yyyy-MM-dd")}"'
+                # Order it by the selected date because why not (might remove this later)
+                sql = f"{sql} ORDER BY {date_type}"
+        return sql
+
+    # Calculate the price from the items in the order
+    def TotalSales(self):
+        Query = self.Create_SQL("SELECT SUM(price) FROM orders")
+        result = MYSQL_Return_Query(Query, self.mysql_cred)
+        result = result.MYSQL_Return_Query()
+        self.ui.TotalSales.setText(result)
+
     # Slot for updating the table
     def updateTable(self):
-        Query = f"SELECT * FROM orders"
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.OrderTable, Query, self.mysql_cred)
 
         # Getting the selected Row

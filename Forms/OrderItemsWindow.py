@@ -50,6 +50,34 @@ class OrderItemsWindow(QDialog):
         # Load Table on load
         self.updateTable()
 
+    # Function to create sql
+    def Create_SQL(self, start):
+        # Used to store the query
+        if start == "":
+            sql = "SELECT * FROM orderitems"
+        else:
+            sql = start
+        # Get the enabled status of the options
+        orderEnabled = self.ui.EnableOrder.isChecked()
+        itemEnabled = self.ui.EnableItem.isChecked()
+        # If either search is enabled
+        if orderEnabled or itemEnabled:
+            sql = f"{sql} WHERE "
+        # If the order search is enabled
+        if orderEnabled:
+            # Get the sql
+            sql = f'{sql}orderName LIKE "%{self.ui.OrderSearchText.text()}%"'
+            # Check if item is also enabled
+            if itemEnabled:
+                sql = f"{sql} AND "
+        # If the item search is enabled
+        if itemEnabled:
+            # Get the sql
+            sql = f'{sql}itemName LIKE "%{self.ui.ItemSearchText.text()}%"'
+        # Order by the orderName then itemName (might change this later)
+        sql = f"{sql} ORDER BY orderName, itemName"
+        return sql
+
     # Slot for opening the other windows
     def openWindow(self):
         window = ""
@@ -71,8 +99,7 @@ class OrderItemsWindow(QDialog):
 
     # Slot for updating the table
     def updateTable(self):
-        orderName = self.ui.OrderText.text()
-        Query = f'SELECT * FROM orderitems WHERE orderName = "{orderName}"'
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.OrderItemTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked

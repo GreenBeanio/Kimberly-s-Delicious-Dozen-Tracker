@@ -3,8 +3,9 @@
 # region Imports
 
 # Packages
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtWidgets import QDialog
+import datetime
 
 # My UI
 import UI.Customers as Customers
@@ -52,9 +53,144 @@ class CustomersWindow(QDialog):
         # Load table
         self.updateTable()
 
+    # Function to create sql
+    def Create_SQL(self, start):
+        # Used to store the query
+        if start == "":
+            sql = "SELECT * FROM customers"
+        else:
+            sql = start
+        # Get the enabled status of the options
+        companyEnabled = self.ui.CompanyEnable.isChecked()
+        emailEnabled = self.ui.EmailEnable.isChecked()
+        socialEnabled = self.ui.SocialEnable.isChecked()
+        contactEnabled = self.ui.ContactEnable.isChecked()
+        phoneEnabled = self.ui.PhoneEnable.isChecked()
+        addressEnabled = self.ui.AddressEnable.isChecked()
+        statusEnabled = self.ui.StatusEnable.isChecked()
+        dateEnabled = self.ui.EnableDate.isChecked()
+        # If any of the search options are enabled
+        if (
+            companyEnabled
+            or emailEnabled
+            or socialEnabled
+            or contactEnabled
+            or phoneEnabled
+            or addressEnabled
+            or statusEnabled
+            or dateEnabled
+        ):
+            sql = f"{sql} WHERE "
+        # If the company search is enabled
+        if companyEnabled:
+            # Get the sql
+            sql = f'{sql}companyName LIKE "%{self.ui.CompanySearch.text()}%"'
+            # Check if any down the line are enabled
+            if (
+                emailEnabled
+                or socialEnabled
+                or contactEnabled
+                or phoneEnabled
+                or addressEnabled
+                or statusEnabled
+                or dateEnabled
+            ):
+                sql = f"{sql} AND "
+        # If the email search is enabled
+        if emailEnabled:
+            # Get the sql
+            sql = f'{sql}email LIKE "%{self.ui.EmailSearch.text()}%"'
+            # Check if any down the line are enabled
+            if (
+                socialEnabled
+                or contactEnabled
+                or phoneEnabled
+                or addressEnabled
+                or statusEnabled
+                or dateEnabled
+            ):
+                sql = f"{sql} AND "
+        # If the social search is enabled
+        if socialEnabled:
+            # Get the sql
+            sql = f'{sql}socialMedia LIKE "%{self.ui.SocialSearch.text()}%"'
+            # Check if any down the line are enabled
+            if (
+                contactEnabled
+                or phoneEnabled
+                or addressEnabled
+                or statusEnabled
+                or dateEnabled
+            ):
+                sql = f"{sql} AND "
+        # If the contact search is enabled
+        if contactEnabled:
+            # Get the sql
+            sql = f'{sql}contactName LIKE "%{self.ui.ContactSearch.text()}%"'
+            # Check if any down the line are enabled
+            if phoneEnabled or addressEnabled or statusEnabled or dateEnabled:
+                sql = f"{sql} AND "
+        # If the phone search is enabled
+        if phoneEnabled:
+            # Get the sql
+            sql = f'{sql}phoneNumber LIKE "%{self.ui.PhoneSearch.text()}%"'
+            # Check if any down the line are enabled
+            if addressEnabled or statusEnabled or dateEnabled:
+                sql = f"{sql} AND "
+        # If the address search is enabled
+        if addressEnabled:
+            # Get the sql
+            sql = f'{sql}address LIKE "%{self.ui.AddressSearch.text()}%"'
+            # Check if any down the line are enabled
+            if statusEnabled or dateEnabled:
+                sql = f"{sql} AND "
+        # If the status search is enabled
+        if statusEnabled:
+            # Get the sql
+            sql = f'{sql}status = "{self.ui.StatusComboSearch.currentText()}"'
+            # Check if any down the line are enabled
+            if dateEnabled:
+                sql = f"{sql} AND "
+        # If the date search is enabled
+        if dateEnabled:
+            # Get the type of date we're searching for
+            date_type = self.ui.DateSelection.currentText()
+            if date_type == "Last Order":
+                date_type = "lastOrder"
+            elif date_type == "Last Finished Order":
+                date_type = "lastFinishedOrder"
+            # Get the date values
+            start_date = self.ui.StartDate.date().toString("yyyy-MM-dd")
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_date = self.ui.EndDate.date().toString("yyyy-MM-dd")
+            end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            values_data = [start_date, end_date]
+            values = Process_Null(values_data)
+            values = values.Null_Values()
+            # If the start date isn't null
+            if values[0] != "Null":
+                # if the end date isn't null
+                if values[1] != "Null":
+                    sql = f'{sql}{date_type} BETWEEN "{self.ui.StartDate.date().toString("yyyy-MM-dd")}" AND "{self.ui.EndDate.date().toString("yyyy-MM-dd")}"'
+                else:
+                    sql = f'{sql}{date_type} = "{self.ui.StartDate.date().toString("yyyy-MM-dd")}"'
+                # Order it by the selected date because why not (might remove this later)
+                sql = f"{sql} ORDER BY {date_type}"
+        return sql
+
+    # Function to get the date
+    def Get_Date(self):
+        result = datetime.date.today()
+        # Get the name of the button pressed
+        pressed = self.sender().objectName()
+        if pressed == "GetStartDate":
+            self.ui.StartDate.setDate(QDate(result))
+        elif pressed == "GetEndDate":
+            self.ui.EndDate.setDate(QDate(result))
+
     # Slot for updating the table
     def updateTable(self):
-        Query = f"SELECT * FROM customers"
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.CustomerTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked
