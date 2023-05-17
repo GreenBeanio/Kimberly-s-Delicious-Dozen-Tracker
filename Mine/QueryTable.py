@@ -19,13 +19,12 @@ class QueryTable(QAbstractTableModel):
 
     # Define the data
     def data(self, index, role):
-        # If the cell (index) is displayed
+        # If the index is displayed
         if role == Qt.ItemDataRole.DisplayRole:
-            # Get the content of the cell from the pandas data frame
-            contents = self._data.iloc[index.row(), index.column()]
-            # Return the contents
-            return str(contents)
-            # I want to make this center the text, but I can't figure out how. I might have to switch to a tablewidget instead.
+            return str(self._data.iloc[index.row(), index.column()])
+        # If the index is for setting the alignment
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
+            return Qt.AlignmentFlag.AlignCenter
 
     # Defining the rows
     def rowCount(self, index):
