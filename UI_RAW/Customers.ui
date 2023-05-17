@@ -399,11 +399,22 @@
       <widget class="QTableView" name="CustomerTable"/>
      </item>
      <item>
-      <widget class="QPushButton" name="Reload">
-       <property name="text">
-        <string>Reload</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="BottomButtons" stretch="1,0">
+       <item>
+        <widget class="QPushButton" name="Reload">
+         <property name="text">
+          <string>Reload</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="UpdateDates">
+         <property name="text">
+          <string>Update Dates</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

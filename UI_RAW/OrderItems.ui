@@ -195,11 +195,22 @@
       <widget class="QTableView" name="OrderItemTable"/>
      </item>
      <item>
-      <widget class="QPushButton" name="Reload">
-       <property name="text">
-        <string>Reload</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="BottomButtons" stretch="1,0">
+       <item>
+        <widget class="QPushButton" name="Reload">
+         <property name="text">
+          <string>Reload</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="UpdateEmptyPrices">
+         <property name="text">
+          <string>Update Empty Prices</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

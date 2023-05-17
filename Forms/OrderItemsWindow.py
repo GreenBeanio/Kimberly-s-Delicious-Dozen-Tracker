@@ -42,6 +42,7 @@ class OrderItemsWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
         self.ui.Reload.clicked.connect(self.updateTable)
+        self.ui.CalculatePrice.clicked.connect(self.updatePrice)
         # Changed searches
         self.ui.OrderSearchText.textChanged.connect(self.updateTable)
         self.ui.ItemSearchText.textChanged.connect(self.updateTable)
@@ -96,6 +97,19 @@ class OrderItemsWindow(QDialog):
         result = MYSQL_Return_Query(Query, self.mysql_cred)
         result = result.MYSQL_Return_Query()
         self.ui.PriceText.setText(result)
+
+    # Slot for updating the price
+    def updatePrice(self):
+        # Update the last order
+        Query = self.Create_SQL(
+            "UPDATE OrderItems SET price = quantity * (SELECT price FROM Items WHERE itemName=OrderItems.itemName) WHERE price IS NULL;"
+        )
+        # Get result of the query
+        query_result = MYSQL_General_Query(Query, self.mysql_cred)
+        result = query_result.MYSQL_General_Query()
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
     # Slot for updating the table
     def updateTable(self):

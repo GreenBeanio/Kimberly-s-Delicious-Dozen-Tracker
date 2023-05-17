@@ -37,6 +37,7 @@ class CustomersWindow(QDialog):
         self.ui.GetStartDate.clicked.connect(self.Get_Date)
         self.ui.GetEndDate.clicked.connect(self.Get_Date)
         self.ui.Reload.clicked.connect(self.updateTable)
+        self.ui.UpdateDates.clicked.connect(self.updateDates)
         # Changed searches
         self.ui.CompanySearch.textChanged.connect(self.updateTable)
         self.ui.ContactSearch.textChanged.connect(self.updateTable)
@@ -187,6 +188,25 @@ class CustomersWindow(QDialog):
             self.ui.StartDate.setDate(QDate(result))
         elif pressed == "GetEndDate":
             self.ui.EndDate.setDate(QDate(result))
+
+    # Function to update the dates
+    def updateDates(self):
+        # Update the last order
+        Query = self.Create_SQL(
+            "UPDATE Customers SET lastOrder = (SELECT orderDate FROM Orders WHERE orderDate IS NOT NULL AND customer=Customers.customerId ORDER BY orderDate DESC LIMIT 1)"
+        )
+        query_result = MYSQL_General_Query(Query, self.mysql_cred)
+        result = query_result.MYSQL_General_Query()
+        self.ui.OutputText.setText(result)
+        # Update the last finished order
+        Query = self.Create_SQL(
+            "UPDATE Customers SET lastFinishedOrder = (SELECT finalDate FROM Orders WHERE finalDate IS NOT NULL AND customer=Customers.customerId ORDER BY finalDate DESC LIMIT 1)"
+        )
+        query_result = MYSQL_General_Query(Query, self.mysql_cred)
+        result = query_result.MYSQL_General_Query()
+        self.ui.OutputText.setText(result)
+        # Reload the table
+        self.updateTable()
 
     # Slot for updating the table
     def updateTable(self):

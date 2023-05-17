@@ -73,6 +73,7 @@ class Ui_ActivitiesDialog(object):
         self.OutputLayout.addLayout(self.ResultLayout)
         self.MainLayout.addLayout(self.OutputLayout)
         self.ActivityTable = QtWidgets.QTableView(parent=ActivitiesDialog)
+        self.ActivityTable.setWordWrap(True)
         self.ActivityTable.setObjectName("ActivityTable")
         self.MainLayout.addWidget(self.ActivityTable)
         self.Reload = QtWidgets.QPushButton(parent=ActivitiesDialog)
