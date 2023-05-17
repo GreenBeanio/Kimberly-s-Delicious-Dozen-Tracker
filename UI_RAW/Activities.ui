@@ -116,7 +116,11 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="ActivityTable"/>
+      <widget class="QTableView" name="ActivityTable">
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="Reload">

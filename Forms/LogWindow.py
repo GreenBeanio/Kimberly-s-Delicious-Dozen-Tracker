@@ -57,6 +57,7 @@ class LogWindow(QDialog):
         self.ui.LogTable.clicked.connect(self.updateValues)
         # Load Table on load
         self.updateTable()
+        self.ui.LogTable
 
     # Function to create sql
     def Create_SQL(self, start):

@@ -80,19 +80,28 @@ class MySQL_Into_Table:
             Table = QueryTable(sql_panda, query_headers)
             # Set the table views model
             self.table.setModel(Table)
-            # Get the table to resize in a nicer way
-            header = self.table.horizontalHeader()
-            for head in range(0, len(header)):
+            # Set the size and types of the columns
+            horizonal_header = self.table.horizontalHeader()
+            for head in range(0, len(horizonal_header)):
                 if head == 0:
-                    header.setSectionResizeMode(
+                    horizonal_header.setSectionResizeMode(
                         head, QHeaderView.ResizeMode.ResizeToContents
                     )
-                elif head == len(header) - 1:
-                    header.setSectionResizeMode(head, QHeaderView.ResizeMode.Stretch)
+                elif head == len(horizonal_header) - 1:
+                    horizonal_header.setSectionResizeMode(
+                        head, QHeaderView.ResizeMode.Stretch
+                    )
                 else:
-                    header.setSectionResizeMode(
+                    column_hint = self.table.sizeHintForColumn(head)
+                    self.table.setColumnWidth(head, column_hint * 1.2)
+                    horizonal_header.setSectionResizeMode(
                         head, QHeaderView.ResizeMode.Interactive
                     )
+            vertical_header = self.table.verticalHeader()
+            # Set the size of the rows based on the size hint for said row (makes the table nice and readable)
+            for head in range(0, len(vertical_header)):
+                row_hint = self.table.sizeHintForRow(head)
+                self.table.setRowHeight(head, row_hint * 1.2)
             # Close the cursor and connection
             cursor.close()
             connection.close()
