@@ -44,12 +44,15 @@ class LogWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.GetDateStartDate.clicked.connect(self.Get_Date)
         self.ui.GetDateEndDate.clicked.connect(self.Get_Date)
-        # Date selection changed
-        self.ui.DataSelect.dateChanged.connect(self.updateTable)
+        self.ui.Reload.clicked.connect(self.updateTable)
+        # Changed Searches
+        self.ui.OrderSearch.returnPressed.connect(self.updateTable)
+        self.ui.ActivitySearch.returnPressed.connect(self.updateTable)
+        self.ui.StartDate.dateChanged.connect(self.updateTable)
+        self.ui.EndDate.dateChanged.connect(self.updateTable)
         # Table clicked
         self.ui.LogTable.clicked.connect(self.updateValues)
         # Load Table on load
-        self.ui.Reload.clicked.connect(self.updateTable)
         self.updateTable()
 
     # Function to create sql

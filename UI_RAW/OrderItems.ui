@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4">
+    <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4,0">
      <item>
       <layout class="QHBoxLayout" name="InputLayout">
        <item>
@@ -193,6 +193,13 @@
      </item>
      <item>
       <widget class="QTableView" name="OrderItemTable"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Reload">
+       <property name="text">
+        <string>Reload</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

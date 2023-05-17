@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_ActivitiesDialog(object):
     def setupUi(self, ActivitiesDialog):
         ActivitiesDialog.setObjectName("ActivitiesDialog")
-        ActivitiesDialog.resize(376, 392)
+        ActivitiesDialog.resize(376, 479)
         self.gridLayout = QtWidgets.QGridLayout(ActivitiesDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.MainLayout = QtWidgets.QVBoxLayout()
@@ -75,6 +75,9 @@ class Ui_ActivitiesDialog(object):
         self.ActivityTable = QtWidgets.QTableView(parent=ActivitiesDialog)
         self.ActivityTable.setObjectName("ActivityTable")
         self.MainLayout.addWidget(self.ActivityTable)
+        self.Reload = QtWidgets.QPushButton(parent=ActivitiesDialog)
+        self.Reload.setObjectName("Reload")
+        self.MainLayout.addWidget(self.Reload)
         self.MainLayout.setStretch(2, 3)
         self.gridLayout.addLayout(self.MainLayout, 0, 0, 1, 1)
 
@@ -95,3 +98,4 @@ class Ui_ActivitiesDialog(object):
         self.SearchSectionLabel.setText(_translate("ActivitiesDialog", "Search Options"))
         self.SearchLabel.setText(_translate("ActivitiesDialog", "Activity:"))
         self.OutputLabel.setText(_translate("ActivitiesDialog", "Result:"))
+        self.Reload.setText(_translate("ActivitiesDialog", "Reload"))
