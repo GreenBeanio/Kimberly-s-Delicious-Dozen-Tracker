@@ -42,17 +42,64 @@ class LogWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        self.ui.GetDateStartDate.clicked.connect(self.Get_Date)
+        self.ui.GetDateEndDate.clicked.connect(self.Get_Date)
         # Date selection changed
         self.ui.DataSelect.dateChanged.connect(self.updateTable)
         # Table clicked
         self.ui.LogTable.clicked.connect(self.updateValues)
         # Load Table on load
+        self.ui.Reload.clicked.connect(self.updateTable)
         self.updateTable()
+
+    # Function to create sql
+    def Create_SQL(self):
+        # Used to store the query
+        sql = "SELECT * FROM log"
+        # Get the enabled status of the options
+        orderEnabled = self.ui.EnableOrder.isChecked()
+        activityEnabled = self.ui.EnableActivity.isChecked()
+        startDateEnabled = self.ui.EnableStart.isChecked()
+        endDateEnabled = self.ui.EnableEnd.isChecked()
+        # If any of the options are enabled (except for endDate, which needs startDate to work)
+        if orderEnabled or activityEnabled or startDateEnabled:
+            sql = f"{sql} WHERE "
+        # If the order is enabled
+        if orderEnabled:
+            # Get the sql
+            sql = f'{sql}orderName LIKE "%{self.ui.OrderSearch.text()}%"'
+            # Check if any down the line are enabled
+            if activityEnabled or startDateEnabled:
+                sql = f"{sql} AND "
+        # If the activity is enabled
+        if activityEnabled:
+            # Get the sql
+            sql = f'{sql}activity LIKE "%{self.ui.ActivitySearch.text()}%"'
+            # Check if any down the line are enabled
+            if startDateEnabled:
+                sql = f"{sql} AND "
+        # If the start date is enabled
+        if startDateEnabled:
+            # If the endDate is also enabled use a range
+            if endDateEnabled:
+                sql = f'{sql}date BETWEEN "{self.ui.StartDate.date().toString("yyyy-MM-dd")}" AND "{self.ui.EndDate.date().toString("yyyy-MM-dd")}"'
+            # If the endDate isn't enabled search for just that date
+            else:
+                sql = f'{sql}date = "{self.ui.StartDate.date().toString("yyyy-MM-dd")}"'
+        sql = f"{sql} ORDER BY date, startTime"
+        return sql
 
     # Function to get the date
     def Get_Date(self):
         result = datetime.date.today()
-        self.ui.DataSelect.setDate(QDate(result))
+        # Get the name of the button pressed
+        pressed = self.sender().objectName()
+        if pressed == "GetDateButton":
+            self.ui.DataSelect.setDate(QDate(result))
+        elif pressed == "GetDateStartDate":
+            self.ui.StartDate.setDate(QDate(result))
+        elif pressed == "GetDateEndDate":
+            self.ui.EndDate.setDate(QDate(result))
 
     # Function to get the time
     def Get_Time(self):
@@ -79,8 +126,9 @@ class LogWindow(QDialog):
 
     # Slot for updating the table
     def updateTable(self):
-        date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
-        Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY startTime'
+        # date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
+        # Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY date, startTime'
+        Query = self.Create_SQL()
         MySQL_Into_Table(self.ui.LogTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked

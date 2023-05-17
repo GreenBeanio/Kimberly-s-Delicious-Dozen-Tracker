@@ -136,6 +136,13 @@
          <item>
           <widget class="QTextEdit" name="NoteBox"/>
          </item>
+         <item>
+          <widget class="QPushButton" name="Reload">
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
