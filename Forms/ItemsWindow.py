@@ -4,7 +4,7 @@
 
 # Packages
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QApplication
 
 # My UI
 import UI.Items as Items
@@ -74,6 +74,9 @@ class ItemsWindow(QDialog):
         # Set the results into the elements
         self.ui.ItemText.setText(results[1])
         self.ui.PriceText.setText(results[2])
+        # Get the current column and save it to your clipboard!
+        col = cell.column()
+        QApplication.clipboard().setText(results[col])
 
     # Getting the selected Row
     def SelectedRow(self):

@@ -4,7 +4,7 @@
 
 # Packages
 from PyQt6.QtCore import Qt, QDate
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QApplication
 import datetime
 
 # My UI
@@ -200,6 +200,9 @@ class OrdersWindow(QDialog):
         self.ui.PriceText.setText(results[7])
         self.ui.PaymentText.setText(results[8])
         self.ui.StatusBox.setCurrentText(results[9])
+        # Get the current column and save it to your clipboard!
+        col = cell.column()
+        QApplication.clipboard().setText(results[col])
 
     # Get the selected row
     def SelectedRow(self):

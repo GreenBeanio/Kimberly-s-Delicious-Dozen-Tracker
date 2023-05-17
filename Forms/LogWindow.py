@@ -4,7 +4,7 @@
 
 # Packages
 from PyQt6.QtCore import Qt, QDate, QTime
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QApplication
 import datetime
 
 # My UI
@@ -98,6 +98,7 @@ class LogWindow(QDialog):
                 sql = f'{sql}date = "{self.ui.StartDate.date().toString("yyyy-MM-dd")}"'
         # Order the results by the date and then start time, heck even end time why not
         sql = f"{sql} ORDER BY date, startTime, endTime"
+        print(sql)
         return sql
 
     def TotalHours(self):
@@ -175,6 +176,9 @@ class LogWindow(QDialog):
         self.ui.NoteBox.setText(results[5])
         self.ui.ActivitiesText.setText(results[6])
         self.ui.OrderText.setText(results[7])
+        # Get the current column and save it to your clipboard!
+        col = cell.column()
+        QApplication.clipboard().setText(results[col])
 
     # Getting the selected Row
     def SelectedRow(self):
