@@ -32,6 +32,9 @@ class ActivitiesWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        self.ui.Reload.clicked.connect(self.updateTable)
+        # Changed searches
+        self.ui.SearchText.textChanged.connect(self.updateTable)
         # Table clicked
         self.ui.ActivityTable.clicked.connect(self.updateValues)
         # Load the table

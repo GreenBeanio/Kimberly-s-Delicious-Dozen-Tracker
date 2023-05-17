@@ -50,7 +50,7 @@
          <item row="1" column="1">
           <widget class="QTimeEdit" name="StartSelect">
            <property name="displayFormat">
-            <string>HH:mm ap</string>
+            <string>hh:mm AP</string>
            </property>
           </widget>
          </item>
@@ -92,7 +92,7 @@
          <item row="2" column="1">
           <widget class="QTimeEdit" name="EndSelect">
            <property name="displayFormat">
-            <string>HH:mm ap</string>
+            <string>hh:mm AP</string>
            </property>
           </widget>
          </item>

@@ -15,6 +15,7 @@ from Mine.MySQLFunc import MySQL_Into_Table
 from Mine.MySQLFunc import MYSQL_General_Query
 from Mine.MySQLFunc import Process_Null
 from Mine.MySQLFunc import Display_Values
+from Mine.MySQLFunc import MYSQL_Return_Query
 
 # My Forms
 import Forms.ActivitiesWindow as ActivitiesWindow
@@ -44,10 +45,12 @@ class LogWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.GetDateStartDate.clicked.connect(self.Get_Date)
         self.ui.GetDateEndDate.clicked.connect(self.Get_Date)
+        self.ui.GetTotalHours.clicked.connect(self.TotalHours)
         self.ui.Reload.clicked.connect(self.updateTable)
         # Changed Searches
-        self.ui.OrderSearch.returnPressed.connect(self.updateTable)
-        self.ui.ActivitySearch.returnPressed.connect(self.updateTable)
+        # self.ui.OrderSearch.returnPressed.connect(self.updateTable)
+        self.ui.OrderSearch.textChanged.connect(self.updateTable)
+        self.ui.ActivitySearch.textChanged.connect(self.updateTable)
         self.ui.StartDate.dateChanged.connect(self.updateTable)
         self.ui.EndDate.dateChanged.connect(self.updateTable)
         # Table clicked
@@ -56,9 +59,12 @@ class LogWindow(QDialog):
         self.updateTable()
 
     # Function to create sql
-    def Create_SQL(self):
+    def Create_SQL(self, start):
         # Used to store the query
-        sql = "SELECT * FROM log"
+        if start == "":
+            sql = "SELECT * FROM log"
+        else:
+            sql = start
         # Get the enabled status of the options
         orderEnabled = self.ui.EnableOrder.isChecked()
         activityEnabled = self.ui.EnableActivity.isChecked()
@@ -91,6 +97,23 @@ class LogWindow(QDialog):
                 sql = f'{sql}date = "{self.ui.StartDate.date().toString("yyyy-MM-dd")}"'
         sql = f"{sql} ORDER BY date, startTime"
         return sql
+
+    def TotalHours(self):
+        # Not that due to mysql having a max time value of 839:59:59 I will not use it. Instead I will use a datetime.
+        # sql = self.Create_SQL("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) FROM log")
+        sql = self.Create_SQL("SELECT SUM(TIME_TO_SEC(duration)) FROM log")
+        response = MYSQL_Return_Query(sql, self.mysql_cred)
+        response = response.MYSQL_Return_Query()
+        response = datetime.timedelta(seconds=float(response))
+        # Different format for the time delta because I want HH:MM:SS not days HH:MM:SS, heck not even the seconds
+        minutes, seconds = divmod(response.seconds + response.days * 86400, 60)
+        hours, minutes = divmod(minutes, 60)
+        # days, hours = divmod(hours, 24)
+        # output = f"{hours}:{minutes}:{seconds}"
+        # output = f"{hours}:{minutes}"
+        # output = f"Days: {days} | Hours: {hours} | Minutes: {minutes}"
+        output = f"Hours: {hours} | Minutes: {minutes}"
+        self.ui.TotalHours.setText(output)
 
     # Function to get the date
     def Get_Date(self):
@@ -131,7 +154,7 @@ class LogWindow(QDialog):
     def updateTable(self):
         # date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
         # Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY date, startTime'
-        Query = self.Create_SQL()
+        Query = self.Create_SQL("")
         MySQL_Into_Table(self.ui.LogTable, Query, self.mysql_cred)
 
     # Slot for updating the values in the fields based off the table clicked

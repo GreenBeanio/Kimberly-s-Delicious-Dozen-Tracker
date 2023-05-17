@@ -43,6 +43,15 @@ class OrdersWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.ResetButton.clicked.connect(self.ResetDate)
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
+        self.ui.GetTotalSales.clicked.connect(self.TotalSales)
+        self.ui.Reload.clicked.connect(self.updateTable)
+        # Changed searches
+        self.ui.OrderSearchText.textChanged.connect(self.updateTable)
+        self.ui.CustomerSearchText.textChanged.connect(self.updateTable)
+        self.ui.StatusComboSearch.currentTextChanged.connect(self.updateTable)
+        self.ui.DateTypeBox.currentTextChanged.connect(self.updateTable)
+        self.ui.StartDateSelect.dateChanged.connect(self.updateTable)
+        self.ui.EndDateSelect.dateChanged.connect(self.updateTable)
         # Table clicked
         self.ui.OrderTable.clicked.connect(self.updateValues)
         # Update table

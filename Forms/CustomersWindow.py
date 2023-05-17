@@ -33,6 +33,20 @@ class CustomersWindow(QDialog):
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
+        self.ui.GetStartDate.clicked.connect(self.Get_Date)
+        self.ui.GetEndDate.clicked.connect(self.Get_Date)
+        self.ui.Reload.clicked.connect(self.updateTable)
+        # Changed searches
+        self.ui.CompanySearch.textChanged.connect(self.updateTable)
+        self.ui.ContactSearch.textChanged.connect(self.updateTable)
+        self.ui.EmailSearch.textChanged.connect(self.updateTable)
+        self.ui.PhoneSearch.textChanged.connect(self.updateTable)
+        self.ui.SocialSearch.textChanged.connect(self.updateTable)
+        self.ui.AddressSearch.textChanged.connect(self.updateTable)
+        self.ui.StatusComboSearch.currentTextChanged.connect(self.updateTable)
+        self.ui.DateSelection.currentTextChanged.connect(self.updateTable)
+        self.ui.StartDate.dateChanged.connect(self.updateTable)
+        self.ui.EndDate.dateChanged.connect(self.updateTable)
         # Table clicked
         self.ui.CustomerTable.clicked.connect(self.updateValues)
         # Load table

@@ -41,8 +41,10 @@ class OrderItemsWindow(QDialog):
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
-        # OrderChanged
-        self.ui.OrderText.textChanged.connect(self.updateTable)
+        self.ui.Reload.clicked.connect(self.updateTable)
+        # Changed searches
+        self.ui.OrderSearchText.textChanged.connect(self.updateTable)
+        self.ui.ItemSearchText.textChanged.connect(self.updateTable)
         # Table clicked
         self.ui.OrderItemTable.clicked.connect(self.updateValues)
         # Load Table on load
