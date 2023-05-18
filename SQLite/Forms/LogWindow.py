@@ -220,7 +220,7 @@ class LogWindow(QDialog):
         note = self.ui.NoteBox.toPlainText()
         activity = self.ui.ActivitiesText.text()
         orderName = self.ui.OrderText.text()
-        # Need to process the duration time in python because sqlite doesn't have the capability to do it like mysql does (wait maybe it actually does if I have to store it as seconds anyway...)
+        # Need to process the duration time in python because sqlite doesn't have the capability to do it like mysql does (wait maybe it actually does if I have to store it as seconds anyway... wait I'm not storing it in seconds)
         duration = end_time - start_time
         # duration = datetime.datetime.utcfromtimestamp(duration.total_seconds()).time()
         # I have to store it as a datetime instead of a time due to sqlite thinking it starts from 2000 instead of 1970 for some reason and messing up calculations
