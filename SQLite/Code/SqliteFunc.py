@@ -167,7 +167,7 @@ class Process_Null:
             if type(value) == str:
                 # If it is empty then make it NULL
                 if value == "":
-                    values[index] = "NULL"
+                    values[index] = "None"
                 # If it isn't empty surround it in quotes
                 else:
                     values[index] = f'"{value}"'
@@ -181,7 +181,7 @@ class Process_Null:
             elif type(value) == datetime.date:
                 # If the date is the date for pseudo null treat it as such
                 if value == datetime.date(2000, 1, 1):
-                    values[index] = "NULL"
+                    values[index] = "None"
                 # If it's a valid date, then treat it as such
                 else:
                     values[index] = f'"{value}"'
