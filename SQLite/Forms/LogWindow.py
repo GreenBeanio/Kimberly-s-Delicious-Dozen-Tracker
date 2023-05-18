@@ -47,6 +47,11 @@ class LogWindow(QDialog):
         self.ui.GetDateEndDate.clicked.connect(self.Get_Date)
         self.ui.GetTotalHours.clicked.connect(self.TotalHours)
         self.ui.Reload.clicked.connect(self.updateTable)
+        # Change Search Enable
+        self.ui.EnableOrder.stateChanged.connect(self.updateTable)
+        self.ui.EnableActivity.stateChanged.connect(self.updateTable)
+        self.ui.EnableStart.stateChanged.connect(self.updateTable)
+        self.ui.EnableEnd.stateChanged.connect(self.updateTable)
         # Changed Searches
         # self.ui.OrderSearch.returnPressed.connect(self.updateTable)
         self.ui.OrderSearch.textChanged.connect(self.updateTable)

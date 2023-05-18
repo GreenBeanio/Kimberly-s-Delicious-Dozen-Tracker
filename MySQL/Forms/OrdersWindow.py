@@ -46,6 +46,11 @@ class OrdersWindow(QDialog):
         self.ui.GetTotalSales.clicked.connect(self.TotalSales)
         self.ui.Reload.clicked.connect(self.updateTable)
         self.ui.CalculatePrice.clicked.connect(self.updatePrice)
+        # Change Search Enable
+        self.ui.OrderEnable.stateChanged.connect(self.updateTable)
+        self.ui.CustomerEnable.stateChanged.connect(self.updateTable)
+        self.ui.StatusEnable.stateChanged.connect(self.updateTable)
+        self.ui.EnableDate.stateChanged.connect(self.updateTable)
         # Changed searches
         self.ui.OrderSearchText.textChanged.connect(self.updateTable)
         self.ui.CustomerSearchText.textChanged.connect(self.updateTable)

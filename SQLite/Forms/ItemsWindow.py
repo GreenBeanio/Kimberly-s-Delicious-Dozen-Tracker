@@ -33,6 +33,8 @@ class ItemsWindow(QDialog):
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.Reload.clicked.connect(self.updateTable)
+        # Change Search Enable
+        self.ui.EnableSearch.stateChanged.connect(self.updateTable)
         # Changed searches
         self.ui.SearchText.textChanged.connect(self.updateTable)
         # Table clicked

@@ -38,6 +38,15 @@ class CustomersWindow(QDialog):
         self.ui.GetEndDate.clicked.connect(self.Get_Date)
         self.ui.Reload.clicked.connect(self.updateTable)
         self.ui.UpdateDates.clicked.connect(self.updateDates)
+        # Change Search Enable
+        self.ui.CompanyEnable.stateChanged.connect(self.updateTable)
+        self.ui.EmailEnable.stateChanged.connect(self.updateTable)
+        self.ui.SocialEnable.stateChanged.connect(self.updateTable)
+        self.ui.ContactEnable.stateChanged.connect(self.updateTable)
+        self.ui.PhoneEnable.stateChanged.connect(self.updateTable)
+        self.ui.AddressEnable.stateChanged.connect(self.updateTable)
+        self.ui.StatusEnable.stateChanged.connect(self.updateTable)
+        self.ui.EnableDate.stateChanged.connect(self.updateTable)
         # Changed searches
         self.ui.CompanySearch.textChanged.connect(self.updateTable)
         self.ui.ContactSearch.textChanged.connect(self.updateTable)

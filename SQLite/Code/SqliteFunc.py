@@ -209,7 +209,7 @@ class Display_Values:
             index = self.model.index(row, col)
             value = self.model.data(index, Qt.ItemDataRole.DisplayRole)
             # If the value is none set to blank?
-            if value == "None":
+            if value == "None" or pd.isna(value):
                 value = ""
             results.append(value)
         return results
