@@ -1,8 +1,3 @@
-# Create database
-CREATE DATABASE KDD;
-# Use Database
-USE KDD;
-# Create Tables
 CREATE TABLE Customers (
 	customerId INTEGER,
     companyName VARCHAR(128),
@@ -63,7 +58,7 @@ CREATE TABLE Log (
     date DATE GENERATED ALWAYS AS (DATE(startTime)) STORED NOT NULL,
     startTime DATETIME NOT NULL,
     endTime DATETIME NOT NULL,
-    duration TIME GENERATED ALWAYS AS (ROUND((JULIANDAY(endTime) - JULIANDAY(startTime)) * 24 * 60 * 60)) STORED NOT NULL,
+    duration TIME NOT NULL,
     note Text,
     activity VARCHAR(64) NOT NULL,
     orderName VARCHAR(64) NOT NULL,
