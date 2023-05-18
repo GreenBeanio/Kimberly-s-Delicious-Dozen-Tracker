@@ -45,7 +45,7 @@ class OrdersWindow(QDialog):
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
         self.ui.GetTotalSales.clicked.connect(self.TotalSales)
         self.ui.Reload.clicked.connect(self.updateTable)
-        self.ui.CalculatePrice.clicked.connect(self.updatePrice)
+        self.ui.UpdateEmptyPrices.clicked.connect(self.updatePrice)
         # Changed searches
         self.ui.OrderSearchText.textChanged.connect(self.updateTable)
         self.ui.CustomerSearchText.textChanged.connect(self.updateTable)
@@ -161,9 +161,7 @@ class OrdersWindow(QDialog):
     # Slot for updating the price
     def updatePrice(self):
         # Update the last order
-        Query = self.Create_SQL(
-            "UPDATE Orders SET price = (SELECT SUM(price) FROM OrderItems WHERE orderName=Orders.orderName) WHERE price IS NULL"
-        )
+        Query = "UPDATE Orders SET price = (SELECT SUM(price) FROM OrderItems WHERE orderName=Orders.orderName) WHERE price IS NULL"
         # Get result of the query
         query_result = sqlite_General_Query(Query, self.sqlite_cred)
         result = query_result.sqlite_General_Query()

@@ -5,8 +5,8 @@ from PyQt6.QtWidgets import QApplication
 import sys
 
 # My code
-from Mine.SqliteFunc import SQlite_Credentials
-from Mine.SqliteFunc import Sqlite_Create_Tables
+from Code.SqliteFunc import SQlite_Credentials
+from Code.SqliteFunc import Sqlite_Create_Tables
 
 # My Forms
 import Forms.MainWindow as MainWindow
@@ -15,7 +15,7 @@ import Forms.MainWindow as MainWindow
 
 # region Code
 # Create sqlite database (if it doesn't exist)
-sqlite_cred = SQlite_Credentials("test.db")
+sqlite_cred = SQlite_Credentials("KDD.db")
 sqlcon = Sqlite_Create_Tables(sqlite_cred)
 sqlcon.Sqlite_Create_Tables()
 # Main App Launching

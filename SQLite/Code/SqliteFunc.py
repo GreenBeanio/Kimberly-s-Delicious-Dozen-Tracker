@@ -30,7 +30,6 @@ class sqlite_Into_Table:
         self.table = table
         self.query = query
         self.database = sqlite.database
-        print(self.query)
         self.sqlite_Into_Table()
 
     # Function sqlite into Table
@@ -41,7 +40,6 @@ class sqlite_Into_Table:
             cursor = connection.cursor()
             cursor.execute(self.query)
             query_data = cursor.fetchall()
-            print(query_data)
             query_headers = list(
                 cursor.description
             )  # list(map(lambda x: x[0], cursor.description))
@@ -50,28 +48,29 @@ class sqlite_Into_Table:
                 query_headers[pos] = str(query_headers[pos][0]).title()
             # Creating a pandas data frame
             sql_panda = pd.DataFrame(query_data)
-            print(query_headers)
-            print(sql_panda)
             # Can't set headers if it's empty for whatever reason
             if not sql_panda.empty:
                 sql_panda.columns = query_headers
-            # For every column that is a datetime, convert it to time
-            for col in sql_panda.select_dtypes(
-                include=["datetime64[ns]"]
-            ).columns.tolist():
-                sql_panda[col] = sql_panda[col].dt.time
-            # For every column that is a tiemdelta, do some real convoluted stuff to show it as a time
-            for col in sql_panda.select_dtypes(
-                include=["timedelta64[ns]"]
-            ).columns.tolist():
-                # For every timedelta in the column
-                for index, delta in enumerate(sql_panda[col]):
-                    # Convert the timedelta into seconds and then a datetime
-                    sql_panda.loc[index, col] = datetime.datetime.utcfromtimestamp(
-                        delta.total_seconds()
-                    )
-                # Convert the new times to a datetime and then only show the time
-                sql_panda[col] = pd.to_datetime(sql_panda[col]).dt.time
+            # Have to do the following to reformat date and some values. Uh oh nesting galore.
+            # Check the table name
+            table_name = self.table.objectName()
+            # If the table is the log table
+            if table_name == "LogTable":
+                # Check every column
+                for col in sql_panda:
+                    # If the column is the duration column
+                    if col == "Duration":
+                        # For every row/cell in that column
+                        for row, value in enumerate(sql_panda[col]):
+                            sql_panda.loc[row, col] = datetime.datetime.strptime(
+                                value, "%Y-%m-%d %H:%M:%S"
+                            ).time()
+            # This is probably a bad idea (possibly too many iterations), but if it's nan replace it with None
+            for col in sql_panda:
+                # For every row/cell in that column, replace unwanted displays with what I want (pd.isna should cover None's, Nan's and Nat's I believe)
+                for row, value in enumerate(sql_panda[col]):
+                    if pd.isna(value):
+                        sql_panda.loc[row, col] = "None"
             # Make the table model
             Table = QueryTable(sql_panda, query_headers)
             # Set the table views model
@@ -111,7 +110,6 @@ class sqlite_General_Query:
     def __init__(self, query, sqlite):
         self.query = query
         self.database = sqlite.database
-        print(self.query)
 
     # Function for general sqlite queries
     def sqlite_General_Query(self):
@@ -133,7 +131,6 @@ class sqlite_Return_Query:
     def __init__(self, query, sqlite):
         self.query = query
         self.database = sqlite.database
-        print(self.query)
 
     # Function for sqlite returning queries
     def sqlite_Return_Query(self):
@@ -305,7 +302,7 @@ class Sqlite_Create_Tables:
                     date DATE GENERATED ALWAYS AS (DATE(startTime)) STORED NOT NULL,
                     startTime DATETIME NOT NULL,
                     endTime DATETIME NOT NULL,
-                    duration TIME GENERATED ALWAYS AS (ROUND((JULIANDAY(endTime) - JULIANDAY(startTime)) * 24 * 60 * 60)) STORED NOT NULL,
+                    duration TIME NOT NULL,
                     note Text,
                     activity VARCHAR(64) NOT NULL,
                     orderName VARCHAR(64) NOT NULL,

@@ -42,7 +42,7 @@ class OrderItemsWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
         self.ui.Reload.clicked.connect(self.updateTable)
-        self.ui.CalculatePrice.clicked.connect(self.updatePrice)
+        self.ui.UpdateEmptyPrices.clicked.connect(self.updatePrice)
         # Changed searches
         self.ui.OrderSearchText.textChanged.connect(self.updateTable)
         self.ui.ItemSearchText.textChanged.connect(self.updateTable)
@@ -93,17 +93,16 @@ class OrderItemsWindow(QDialog):
 
     # Calculate the price from the items in the order
     def CalculatePrice(self):
-        Query = f'SELECT DISTINCT {self.ui.QuantityText.text()} * (SELECT price FROM Items WHERE itemName="{self.ui.ItemText.text()}") FROM orderitems'
-        result = MYSQL_Return_Query(Query, self.mysql_cred)
-        result = result.MYSQL_Return_Query()
-        self.ui.PriceText.setText(result)
+        if self.ui.QuantityText.text() != "" and self.ui.ItemText.text() != "":
+            Query = f'SELECT DISTINCT {self.ui.QuantityText.text()} * (SELECT price FROM Items WHERE itemName="{self.ui.ItemText.text()}") FROM orderitems'
+            result = MYSQL_Return_Query(Query, self.mysql_cred)
+            result = result.MYSQL_Return_Query()
+            self.ui.PriceText.setText(result)
 
     # Slot for updating the price
     def updatePrice(self):
         # Update the last order
-        Query = self.Create_SQL(
-            "UPDATE OrderItems SET price = quantity * (SELECT price FROM Items WHERE itemName=OrderItems.itemName) WHERE price IS NULL;"
-        )
+        Query = "UPDATE OrderItems SET price = quantity * (SELECT price FROM Items WHERE itemName=OrderItems.itemName) WHERE price IS NULL"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

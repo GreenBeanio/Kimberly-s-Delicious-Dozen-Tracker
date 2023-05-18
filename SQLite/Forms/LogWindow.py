@@ -3,7 +3,7 @@
 # region Imports
 
 # Packages
-from PyQt6.QtCore import Qt, QDate, QTime
+from PyQt6.QtCore import Qt, QDate, QTime, QDateTime
 from PyQt6.QtWidgets import QDialog, QApplication
 import datetime
 
@@ -101,9 +101,7 @@ class LogWindow(QDialog):
         return sql
 
     def TotalHours(self):
-        # Not that due to sqlite having a max time value of 839:59:59 I will not use it. Instead I will use a datetime.
-        # sql = self.Create_SQL("SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) FROM log")
-        sql = self.Create_SQL("SELECT SUM(TIME_TO_SEC(duration)) FROM log")
+        sql = self.Create_SQL('SELECT SUM(STRFTIME("%s", duration)) FROM log')
         response = sqlite_Return_Query(sql, self.sqlite_cred)
         response = response.sqlite_Return_Query()
         response = datetime.timedelta(seconds=float(response))
@@ -154,8 +152,6 @@ class LogWindow(QDialog):
 
     # Slot for updating the table
     def updateTable(self):
-        # date_selection = self.ui.DataSelect.date().toString("yyyy-MM-dd")
-        # Query = f'SELECT * FROM log WHERE date = "{date_selection}" ORDER BY date, startTime'
         Query = self.Create_SQL("")
         sqlite_Into_Table(self.ui.LogTable, Query, self.sqlite_cred)
 
@@ -170,8 +166,13 @@ class LogWindow(QDialog):
         results = results.Display_Values()
         # Set the results into the elements
         self.ui.DataSelect.setDate(QDate.fromString(results[1], "yyyy-MM-dd"))
-        self.ui.StartSelect.setTime(QTime.fromString(results[2], "HH:mm:ss"))
-        self.ui.EndSelect.setTime(QTime.fromString(results[3], "HH:mm:ss"))
+        # Due to the way that SQLite seems to store datetime we have to make a datetime then get the time from it
+        self.ui.StartSelect.setTime(
+            QDateTime.fromString(results[2], "yyyy-MM-dd HH:mm:ss").time()
+        )
+        self.ui.EndSelect.setTime(
+            QDateTime.fromString(results[3], "yyyy-MM-dd HH:mm:ss").time()
+        )
         self.ui.NoteBox.setText(results[5])
         self.ui.ActivitiesText.setText(results[6])
         self.ui.OrderText.setText(results[7])
@@ -214,7 +215,13 @@ class LogWindow(QDialog):
         note = self.ui.NoteBox.toPlainText()
         activity = self.ui.ActivitiesText.text()
         orderName = self.ui.OrderText.text()
-        return start_time, end_time, note, activity, orderName
+        # Need to process the duration time in python because sqlite doesn't have the capability to do it like mysql does
+        duration = end_time - start_time
+        # duration = datetime.datetime.utcfromtimestamp(duration.total_seconds()).time()
+        # I have to store it as a datetime instead of a time due to sqlite thinking it starts from 2000 instead of 1970 for some reason and messing up calculations
+        duration = datetime.datetime.utcfromtimestamp(duration.total_seconds())
+        # Well that doesn't work, sqlite keeps giving me the wrong duration. It's using 2000 instead of 1970 as the epoch time it seems.
+        return start_time, end_time, duration, note, activity, orderName
 
     # Slot for Adding an entry
     def AddEntry(self):
@@ -223,7 +230,7 @@ class LogWindow(QDialog):
         values = Process_Null(values_data)
         values = values.Null_Values()
         # Create query
-        Query = f"INSERT INTO log (startTime, endTime, note, activity, orderName) VALUES ({values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]})"
+        Query = f"INSERT INTO log (startTime, endTime, duration, note, activity, orderName) VALUES ({values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]})"
         # Get result of the query
         query_result = sqlite_General_Query(Query, self.sqlite_cred)
         result = query_result.sqlite_General_Query()
@@ -242,7 +249,7 @@ class LogWindow(QDialog):
             values = Process_Null(values_data)
             values = values.Null_Values()
             # Query to update the value
-            Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, note={values[2]}, activity={values[3]}, orderName={values[4]} WHERE logid={value}"
+            Query = f"UPDATE log SET startTime={values[0]}, endTime={values[1]}, duration={values[2]},note={values[3]}, activity={values[4]}, orderName={values[5]} WHERE logid={value}"
             # Get result of the query
             query_result = sqlite_General_Query(Query, self.sqlite_cred)
             result = query_result.sqlite_General_Query()

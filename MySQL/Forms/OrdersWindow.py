@@ -161,9 +161,7 @@ class OrdersWindow(QDialog):
     # Slot for updating the price
     def updatePrice(self):
         # Update the last order
-        Query = self.Create_SQL(
-            "UPDATE Orders SET price = (SELECT SUM(price) FROM OrderItems WHERE orderName=Orders.orderName) WHERE price IS NULL"
-        )
+        Query = "UPDATE Orders SET price = (SELECT SUM(price) FROM OrderItems WHERE orderName=Orders.orderName) WHERE price IS NULL"
         # Get result of the query
         query_result = MYSQL_General_Query(Query, self.mysql_cred)
         result = query_result.MYSQL_General_Query()

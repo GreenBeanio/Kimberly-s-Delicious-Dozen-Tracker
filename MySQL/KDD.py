@@ -6,7 +6,7 @@ import json
 import sys
 
 # My code
-from Mine.MySQLFunc import MYSQL_Credentials
+from Code.MySQLFunc import MYSQL_Credentials
 
 # My Forms
 import Forms.MainWindow as MainWindow
