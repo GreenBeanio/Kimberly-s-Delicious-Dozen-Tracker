@@ -7,27 +7,27 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QApplication
 
 # My UI
-import UI.Activities as Activities
+import UI.Items as Items
 
 # My code
-from Mine.MySQLFunc import MySQL_Into_Table
-from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import Process_Null
-
+from Code.SqliteFunc import sqlite_Into_Table
+from Code.SqliteFunc import sqlite_General_Query
+from Code.SqliteFunc import Process_Null
+from Code.SqliteFunc import Display_Values
 
 # endregion Imports
 
 
 # region Code
-# Defining the Activities Window
-class ActivitiesWindow(QDialog):
+# Defining the Items Window
+class ItemsWindow(QDialog):
     # Initializing the Dialog
-    def __init__(self, mysql_cred, parent=None):
+    def __init__(self, sqlite_cred, parent=None):
         # Initial Set Up
         super().__init__(parent)
-        self.ui = Activities.Ui_ActivitiesDialog()
+        self.ui = Items.Ui_ItemsDialog()
         self.ui.setupUi(self)
-        self.mysql_cred = mysql_cred
+        self.sqlite_cred = sqlite_cred
         # Buttons
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
@@ -36,15 +36,15 @@ class ActivitiesWindow(QDialog):
         # Changed searches
         self.ui.SearchText.textChanged.connect(self.updateTable)
         # Table clicked
-        self.ui.ActivityTable.clicked.connect(self.updateValues)
-        # Load the table
+        self.ui.ItemTable.clicked.connect(self.updateValues)
+        # Load table
         self.updateTable()
 
     # Function to create sql
     def Create_SQL(self, start):
         # Used to store the query
         if start == "":
-            sql = "SELECT * FROM activity"
+            sql = "SELECT * FROM items"
         else:
             sql = start
         # Get the enabled status of the options
@@ -52,40 +52,40 @@ class ActivitiesWindow(QDialog):
         # If the search is enabled
         if searchEnabled:
             # Get the sql
-            sql = f'{sql} WHERE activityName LIKE "%{self.ui.SearchText.text()}%"'
-        # Order by the activityName, because I think that'll be better with the activity naming convention being used
-        sql = f"{sql} ORDER BY activityName"
+            sql = f'{sql} WHERE itemName LIKE "%{self.ui.SearchText.text()}%"'
+        # Order by the itemName (might change this later)
+        sql = f"{sql} ORDER BY itemName"
         return sql
 
     # Slot for updating the table
     def updateTable(self):
         Query = self.Create_SQL("")
-        MySQL_Into_Table(self.ui.ActivityTable, Query, self.mysql_cred)
+        sqlite_Into_Table(self.ui.ItemTable, Query, self.sqlite_cred)
 
     # Slot for updating the values in the fields based off the table clicked
     def updateValues(self):
         # Get the current location in the table
-        cell = self.ui.ActivityTable.currentIndex()
-        row = cell.row()
+        cell = self.ui.ItemTable.currentIndex()
         # Get the model
-        model = self.ui.ActivityTable.model()
-        # Get the index and value
-        index = model.index(row, 1)
-        value = model.data(index, Qt.ItemDataRole.DisplayRole)
+        model = self.ui.ItemTable.model()
+        # Get the values
+        results = Display_Values(model, cell)
+        results = results.Display_Values()
         # Set the results into the elements
-        self.ui.ActivityText.setText(value)
-        # Get the current column and save it to your clipboard
+        self.ui.ItemText.setText(results[1])
+        self.ui.PriceText.setText(results[2])
+        # Get the current column and save it to your clipboard!
         col = cell.column()
-        QApplication.clipboard().setText(value)
+        QApplication.clipboard().setText(results[col])
 
     # Getting the selected Row
     def SelectedRow(self):
         # Get the current selected cell
-        cell = self.ui.ActivityTable.currentIndex()
+        cell = self.ui.ItemTable.currentIndex()
         column = 0  # cell.column()
         row = cell.row()
         # Get the data model the table view is using
-        model = self.ui.ActivityTable.model()
+        model = self.ui.ItemTable.model()
         # Get the index of the model from the cell earlier
         index = model.index(row, column)
         # Get the actual value of the cell if one was actually selected
@@ -99,10 +99,9 @@ class ActivitiesWindow(QDialog):
     # Function to get the information from gui elements
     def GetValues(self):
         # Get element values
-        activity = self.ui.ActivityText.text()
-        # Doing this for other code to work properly
-        blank = ""
-        return activity, blank
+        item_name = self.ui.ItemText.text()
+        item_price = self.ui.PriceText.text()
+        return item_name, item_price
 
     # Slot for Adding an entry
     def AddEntry(self):
@@ -111,10 +110,10 @@ class ActivitiesWindow(QDialog):
         values = Process_Null(values_data)
         values = values.Null_Values()
         # Create query
-        Query = f"INSERT INTO activity VALUES (NULL, {values[0]})"
+        Query = f"INSERT INTO items VALUES (NULL, {values[0]}, {values[1]})"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
@@ -129,12 +128,10 @@ class ActivitiesWindow(QDialog):
             values = Process_Null(values_data)
             values = values.Null_Values()
             # Create query
-            Query = (
-                f"UPDATE activity SET activityName={values[0]} WHERE activityId={value}"
-            )
+            Query = f"UPDATE items SET itemName={values[0]}, price={values[1]} WHERE itemId={value}"
             # Get result of the query
-            query_result = MYSQL_General_Query(Query, self.mysql_cred)
-            result = query_result.MYSQL_General_Query()
+            query_result = sqlite_General_Query(Query, self.sqlite_cred)
+            result = query_result.sqlite_General_Query()
             self.ui.OutputText.setText(result)
             # Reload the table
             self.updateTable()
@@ -146,10 +143,10 @@ class ActivitiesWindow(QDialog):
         # Get the selected cell
         value = self.SelectedRow()
         # Query to delete the entry
-        Query = f"DELETE FROM activity WHERE activityId={value}"
+        Query = f"DELETE FROM items WHERE itemId={value}"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()

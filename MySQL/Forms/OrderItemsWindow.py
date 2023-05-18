@@ -10,15 +10,15 @@ from PyQt6.QtWidgets import QDialog, QApplication
 import UI.OrderItems as OrderItems
 
 # My code
-from Mine.MySQLFunc import MySQL_Into_Table
-from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import Display_Values
-from Mine.MySQLFunc import MYSQL_Return_Query
+from Code.MySQLFunc import MySQL_Into_Table
+from Code.MySQLFunc import MYSQL_General_Query
+from Code.MySQLFunc import Display_Values
+from Code.MySQLFunc import MYSQL_Return_Query
+from Code.MySQLFunc import Process_Null
 
 # My Forms
 import Forms.ItemsWindow as ItemsWindow
 import Forms.OrdersWindow as OrdersWindow
-from Mine.MySQLFunc import Process_Null
 
 
 # endregion Imports

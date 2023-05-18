@@ -8,7 +8,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHeaderView
 
 # My code
-from Mine.QueryTable import QueryTable
+from Code.QueryTable import QueryTable
 
 # endregion Imports
 

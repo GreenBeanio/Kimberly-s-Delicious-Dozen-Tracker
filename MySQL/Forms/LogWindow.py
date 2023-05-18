@@ -11,11 +11,11 @@ import datetime
 import UI.Log as Log
 
 # My code
-from Mine.MySQLFunc import MySQL_Into_Table
-from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import Process_Null
-from Mine.MySQLFunc import Display_Values
-from Mine.MySQLFunc import MYSQL_Return_Query
+from Code.MySQLFunc import MySQL_Into_Table
+from Code.MySQLFunc import MYSQL_General_Query
+from Code.MySQLFunc import Process_Null
+from Code.MySQLFunc import Display_Values
+from Code.MySQLFunc import MYSQL_Return_Query
 
 # My Forms
 import Forms.ActivitiesWindow as ActivitiesWindow

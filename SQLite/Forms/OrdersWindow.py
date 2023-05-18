@@ -11,11 +11,11 @@ import datetime
 import UI.Orders as Orders
 
 # My code
-from Mine.MySQLFunc import MySQL_Into_Table
-from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import Process_Null
-from Mine.MySQLFunc import Display_Values
-from Mine.MySQLFunc import MYSQL_Return_Query
+from Code.SqliteFunc import sqlite_Into_Table
+from Code.SqliteFunc import sqlite_General_Query
+from Code.SqliteFunc import Process_Null
+from Code.SqliteFunc import Display_Values
+from Code.SqliteFunc import sqlite_Return_Query
 
 # My Forms
 import Forms.CustomersWindow as CustomersWindow
@@ -27,12 +27,12 @@ import Forms.CustomersWindow as CustomersWindow
 # Defining the Orders Window
 class OrdersWindow(QDialog):
     # Initializing the Dialog
-    def __init__(self, mysql_cred, parent=None):
+    def __init__(self, sqlite_cred, parent=None):
         # Initial Set Up
         super().__init__(parent)
         self.ui = Orders.Ui_OrdersDialog()
         self.ui.setupUi(self)
-        self.mysql_cred = mysql_cred
+        self.sqlite_cred = sqlite_cred
         # Buttons
         self.ui.CustomersButton.clicked.connect(self.openCustomers)
         self.ui.GetOrderDateButton.clicked.connect(self.GetDate)
@@ -60,7 +60,7 @@ class OrdersWindow(QDialog):
 
     # Slot for opening the customers window
     def openCustomers(self):
-        window = CustomersWindow.CustomersWindow(self.mysql_cred, self)
+        window = CustomersWindow.CustomersWindow(self.sqlite_cred, self)
         window.show()
 
     # To reset the date for pseudo null value
@@ -82,8 +82,8 @@ class OrdersWindow(QDialog):
     # Calculate the price from the items in the order
     def CalculatePrice(self):
         Query = f'SELECT SUM(price) FROM orderitems WHERE orderName="{self.ui.OrderText.text()}"'
-        result = MYSQL_Return_Query(Query, self.mysql_cred)
-        result = result.MYSQL_Return_Query()
+        result = sqlite_Return_Query(Query, self.sqlite_cred)
+        result = result.sqlite_Return_Query()
         self.ui.PriceText.setText(result)
 
     # Function to create sql
@@ -154,8 +154,8 @@ class OrdersWindow(QDialog):
     # Calculate the price from the items in the order
     def TotalSales(self):
         Query = self.Create_SQL("SELECT SUM(price) FROM orders")
-        result = MYSQL_Return_Query(Query, self.mysql_cred)
-        result = result.MYSQL_Return_Query()
+        result = sqlite_Return_Query(Query, self.sqlite_cred)
+        result = result.sqlite_Return_Query()
         self.ui.TotalSales.setText(result)
 
     # Slot for updating the price
@@ -165,8 +165,8 @@ class OrdersWindow(QDialog):
             "UPDATE Orders SET price = (SELECT SUM(price) FROM OrderItems WHERE orderName=Orders.orderName) WHERE price IS NULL"
         )
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
@@ -174,7 +174,7 @@ class OrdersWindow(QDialog):
     # Slot for updating the table
     def updateTable(self):
         Query = self.Create_SQL("")
-        MySQL_Into_Table(self.ui.OrderTable, Query, self.mysql_cred)
+        sqlite_Into_Table(self.ui.OrderTable, Query, self.sqlite_cred)
 
         # Getting the selected Row
 
@@ -259,8 +259,8 @@ class OrdersWindow(QDialog):
         # Create query
         Query = f"INSERT INTO orders VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]}, {values[6]}, {values[7]}, {values[8]})"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
@@ -277,8 +277,8 @@ class OrdersWindow(QDialog):
             # Create query
             Query = f"UPDATE orders SET orderName={values[0]}, customer={values[1]}, note={values[2]}, orderDate={values[3]}, plannedDate={values[4]}, finalDate={values[5]}, price={values[6]}, paymentType={values[7]}, status={values[8]} WHERE orderId={value}"
             # Get result of the query
-            query_result = MYSQL_General_Query(Query, self.mysql_cred)
-            result = query_result.MYSQL_General_Query()
+            query_result = sqlite_General_Query(Query, self.sqlite_cred)
+            result = query_result.sqlite_General_Query()
             self.ui.OutputText.setText(result)
             # Reload the table
             self.updateTable()
@@ -292,8 +292,8 @@ class OrdersWindow(QDialog):
         # Query to delete the entry
         Query = f"DELETE FROM orders WHERE orderId={value}"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()

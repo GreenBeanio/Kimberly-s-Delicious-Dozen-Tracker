@@ -11,10 +11,10 @@ import datetime
 import UI.Customers as Customers
 
 # My code
-from Mine.MySQLFunc import MySQL_Into_Table
-from Mine.MySQLFunc import MYSQL_General_Query
-from Mine.MySQLFunc import Process_Null
-from Mine.MySQLFunc import Display_Values
+from Code.SqliteFunc import sqlite_Into_Table
+from Code.SqliteFunc import sqlite_General_Query
+from Code.SqliteFunc import Process_Null
+from Code.SqliteFunc import Display_Values
 
 # endregion Imports
 
@@ -24,12 +24,12 @@ from Mine.MySQLFunc import Display_Values
 # Defining the Customers Window
 class CustomersWindow(QDialog):
     # Initializing the Dialog
-    def __init__(self, mysql_cred, parent=None):
+    def __init__(self, sqlite_cred, parent=None):
         # Initial Set Up
         super().__init__(parent)
         self.ui = Customers.Ui_CustomerDialog()
         self.ui.setupUi(self)
-        self.mysql_cred = mysql_cred
+        self.sqlite_cred = sqlite_cred
         # Buttons
         self.ui.AddButton.clicked.connect(self.AddEntry)
         self.ui.UpdateButton.clicked.connect(self.UpdateEntry)
@@ -195,15 +195,15 @@ class CustomersWindow(QDialog):
         Query = self.Create_SQL(
             "UPDATE Customers SET lastOrder = (SELECT orderDate FROM Orders WHERE orderDate IS NOT NULL AND customer=Customers.customerId ORDER BY orderDate DESC LIMIT 1)"
         )
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Update the last finished order
         Query = self.Create_SQL(
             "UPDATE Customers SET lastFinishedOrder = (SELECT finalDate FROM Orders WHERE finalDate IS NOT NULL AND customer=Customers.customerId ORDER BY finalDate DESC LIMIT 1)"
         )
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
@@ -211,7 +211,7 @@ class CustomersWindow(QDialog):
     # Slot for updating the table
     def updateTable(self):
         Query = self.Create_SQL("")
-        MySQL_Into_Table(self.ui.CustomerTable, Query, self.mysql_cred)
+        sqlite_Into_Table(self.ui.CustomerTable, Query, self.sqlite_cred)
 
     # Slot for updating the values in the fields based off the table clicked
     def updateValues(self):
@@ -275,8 +275,8 @@ class CustomersWindow(QDialog):
         # Create query
         Query = f"INSERT INTO customers VALUES (NULL, {values[0]}, {values[1]}, {values[2]}, {values[3]}, {values[4]}, {values[5]}, NULL, NULL, {values[6]}, {values[7]})"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
@@ -293,8 +293,8 @@ class CustomersWindow(QDialog):
             # Create query
             Query = f"UPDATE customers SET companyName={values[0]}, contactName={values[1]}, email={values[2]}, phoneNumber={values[3]}, socialMedia={values[4]}, address={values[5]}, status={values[6]}, note={values[7]} WHERE customerId={value}"
             # Get result of the query
-            query_result = MYSQL_General_Query(Query, self.mysql_cred)
-            result = query_result.MYSQL_General_Query()
+            query_result = sqlite_General_Query(Query, self.sqlite_cred)
+            result = query_result.sqlite_General_Query()
             self.ui.OutputText.setText(result)
             # Reload the table
             self.updateTable()
@@ -308,8 +308,8 @@ class CustomersWindow(QDialog):
         # Query to delete the entry
         Query = f"DELETE FROM customers WHERE customerId={value}"
         # Get result of the query
-        query_result = MYSQL_General_Query(Query, self.mysql_cred)
-        result = query_result.MYSQL_General_Query()
+        query_result = sqlite_General_Query(Query, self.sqlite_cred)
+        result = query_result.sqlite_General_Query()
         self.ui.OutputText.setText(result)
         # Reload the table
         self.updateTable()
