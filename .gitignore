@@ -132,3 +132,4 @@ failure.txt
 .vscode/
 KDD.db
 /.vscode
+/Release
