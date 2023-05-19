@@ -151,7 +151,7 @@ class sqlite_Return_Query:
             return ""
 
 
-# Used for handling null values and pseudo null values (for SQL)
+# Used for handling null values and pseudo null values (for SQL) [SQL IS NULL NOT NONE YOU GOOSE! NONE IS PYTHON!]
 class Process_Null:
     # Initialize class
     def __init__(self, modify):
@@ -167,7 +167,7 @@ class Process_Null:
             if type(value) == str:
                 # If it is empty then make it NULL
                 if value == "":
-                    values[index] = "None"
+                    values[index] = "NULL"
                 # If it isn't empty surround it in quotes
                 else:
                     values[index] = f'"{value}"'
@@ -181,7 +181,7 @@ class Process_Null:
             elif type(value) == datetime.date:
                 # If the date is the date for pseudo null treat it as such
                 if value == datetime.date(2000, 1, 1):
-                    values[index] = "None"
+                    values[index] = "NULL"
                 # If it's a valid date, then treat it as such
                 else:
                     values[index] = f'"{value}"'

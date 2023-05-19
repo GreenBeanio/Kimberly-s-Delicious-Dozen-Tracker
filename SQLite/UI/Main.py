@@ -13,6 +13,9 @@ class Ui_MainDialog(object):
     def setupUi(self, MainDialog):
         MainDialog.setObjectName("MainDialog")
         MainDialog.resize(263, 122)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        MainDialog.setWindowIcon(icon)
         self.gridLayout_2 = QtWidgets.QGridLayout(MainDialog)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.gridLayout = QtWidgets.QGridLayout()

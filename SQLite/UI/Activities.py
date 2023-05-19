@@ -13,6 +13,9 @@ class Ui_ActivitiesDialog(object):
     def setupUi(self, ActivitiesDialog):
         ActivitiesDialog.setObjectName("ActivitiesDialog")
         ActivitiesDialog.resize(376, 479)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        ActivitiesDialog.setWindowIcon(icon)
         self.gridLayout = QtWidgets.QGridLayout(ActivitiesDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.MainLayout = QtWidgets.QVBoxLayout()

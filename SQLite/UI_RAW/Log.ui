@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Log</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../UI/KDD Icon.png</normaloff>../UI/KDD Icon.png</iconset>
+  </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>

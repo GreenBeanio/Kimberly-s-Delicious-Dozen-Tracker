@@ -13,6 +13,9 @@ class Ui_CustomerDialog(object):
     def setupUi(self, CustomerDialog):
         CustomerDialog.setObjectName("CustomerDialog")
         CustomerDialog.resize(1132, 911)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        CustomerDialog.setWindowIcon(icon)
         self.gridLayout = QtWidgets.QGridLayout(CustomerDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.MainLayout = QtWidgets.QVBoxLayout()

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Order Items</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../UI/KDD Icon.png</normaloff>../UI/KDD Icon.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4,0">

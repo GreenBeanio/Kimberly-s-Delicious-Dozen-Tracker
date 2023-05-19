@@ -19,6 +19,7 @@ from Code.SqliteFunc import sqlite_Return_Query
 
 # My Forms
 import Forms.CustomersWindow as CustomersWindow
+import Forms.OrderItemsWindowRange as OrderItemsWindowRange
 
 # endregion Imports
 
@@ -43,8 +44,11 @@ class OrdersWindow(QDialog):
         self.ui.DeleteButton.clicked.connect(self.DeleteEntry)
         self.ui.ResetButton.clicked.connect(self.ResetDate)
         self.ui.CalculatePrice.clicked.connect(self.CalculatePrice)
+        self.ui.GetStartDate.clicked.connect(self.GetDate)
+        self.ui.GetEndDate.clicked.connect(self.GetDate)
         self.ui.GetTotalSales.clicked.connect(self.TotalSales)
         self.ui.Reload.clicked.connect(self.updateTable)
+        self.ui.ShowOrderItemsButton.clicked.connect(self.openItems)
         self.ui.UpdateEmptyPrices.clicked.connect(self.updatePrice)
         # Change Search Enable
         self.ui.OrderEnable.stateChanged.connect(self.updateTable)
@@ -68,6 +72,12 @@ class OrdersWindow(QDialog):
         window = CustomersWindow.CustomersWindow(self.sqlite_cred, self)
         window.show()
 
+    # Slot for opening the items
+    def openItems(self):
+        sql = self.Create_SQL("SELECT orderName FROM orders")
+        window = OrderItemsWindowRange.OrderItemsWindow(self.mysql_cred, sql, self)
+        window.show()
+
     # To reset the date for pseudo null value
     def ResetDate(self):
         self.ui.FinalDate.setDate(QDate(2000, 1, 1))
@@ -83,6 +93,10 @@ class OrdersWindow(QDialog):
             self.ui.PlannedDate.setDate(QDate(result))
         elif pressed == "GetFinalDateButton":
             self.ui.FinalDate.setDate(QDate(result))
+        elif pressed == "GetStartDate":
+            self.ui.StartDateSelect.setDate(QDate(result))
+        elif pressed == "GetEndDate":
+            self.ui.EndDateSelect.setDate(QDate(result))
 
     # Calculate the price from the items in the order
     def CalculatePrice(self):

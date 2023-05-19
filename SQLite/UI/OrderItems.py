@@ -13,6 +13,9 @@ class Ui_OrderItemsDialog(object):
     def setupUi(self, OrderItemsDialog):
         OrderItemsDialog.setObjectName("OrderItemsDialog")
         OrderItemsDialog.resize(709, 613)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        OrderItemsDialog.setWindowIcon(icon)
         self.gridLayout = QtWidgets.QGridLayout(OrderItemsDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.MainLayout = QtWidgets.QVBoxLayout()

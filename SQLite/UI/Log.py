@@ -13,6 +13,9 @@ class Ui_LogDialog(object):
     def setupUi(self, LogDialog):
         LogDialog.setObjectName("LogDialog")
         LogDialog.resize(964, 764)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        LogDialog.setWindowIcon(icon)
         LogDialog.setSizeGripEnabled(False)
         self.gridLayout = QtWidgets.QGridLayout(LogDialog)
         self.gridLayout.setObjectName("gridLayout")

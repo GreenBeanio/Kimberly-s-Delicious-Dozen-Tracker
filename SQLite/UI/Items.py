@@ -13,6 +13,9 @@ class Ui_ItemsDialog(object):
     def setupUi(self, ItemsDialog):
         ItemsDialog.setObjectName("ItemsDialog")
         ItemsDialog.resize(585, 340)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("UI_RAW\\../UI/KDD Icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        ItemsDialog.setWindowIcon(icon)
         self.gridLayout = QtWidgets.QGridLayout(ItemsDialog)
         self.gridLayout.setObjectName("gridLayout")
         self.MainLayout = QtWidgets.QVBoxLayout()

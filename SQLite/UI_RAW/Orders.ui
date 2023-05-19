@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Orders</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../UI/KDD Icon.png</normaloff>../UI/KDD Icon.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="MainLayout" stretch="1,0,4,0">
@@ -453,11 +457,18 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="BottomButtons" stretch="1,0">
+      <layout class="QHBoxLayout" name="BottomButtons" stretch="1,0,0">
        <item>
         <widget class="QPushButton" name="Reload">
          <property name="text">
           <string>Reload</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ShowOrderItemsButton">
+         <property name="text">
+          <string>Show Order Items</string>
          </property>
         </widget>
        </item>

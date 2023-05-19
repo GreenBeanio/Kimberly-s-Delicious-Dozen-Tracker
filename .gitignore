@@ -131,3 +131,4 @@ config.json
 failure.txt
 .vscode/
 KDD.db
+/.vscode

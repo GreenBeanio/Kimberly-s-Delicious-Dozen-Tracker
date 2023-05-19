@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Kimberly's Delicious Dozen</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../UI/KDD Icon.png</normaloff>../UI/KDD Icon.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
