@@ -137,6 +137,7 @@ ___
 1. Move all the entire contents from inside either the MySQL or the SQLite folder into the root directory.
 
     - If you're using MySQL you will need to setup a MYSQL server and run the SQL script to set up the database.
+      - You will also need to rename "blank_config.json" to "config.json" and put in your MySQL information.
     - If you're using SQLite no extra set up is required.
 2. Run the following code:
 
