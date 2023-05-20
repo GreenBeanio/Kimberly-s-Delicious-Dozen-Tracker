@@ -93,7 +93,7 @@ class MySQL_Into_Table:
                     )
                 else:
                     column_hint = self.table.sizeHintForColumn(head)
-                    self.table.setColumnWidth(head, column_hint * 1.2)
+                    self.table.setColumnWidth(head, int(column_hint * 1.2))
                     horizonal_header.setSectionResizeMode(
                         head, QHeaderView.ResizeMode.Interactive
                     )
@@ -101,7 +101,7 @@ class MySQL_Into_Table:
             # Set the size of the rows based on the size hint for said row (makes the table nice and readable)
             for head in range(0, len(vertical_header)):
                 row_hint = self.table.sizeHintForRow(head)
-                self.table.setRowHeight(head, row_hint * 1.2)
+                self.table.setRowHeight(head, int(row_hint * 1.2))
             # Close the cursor and connection
             cursor.close()
             connection.close()
